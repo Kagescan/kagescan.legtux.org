@@ -1,6 +1,6 @@
 # Kagescan
 
-(Kagescan's website)[https://kagescan.legtux.org] public source code.  
+[Kagescan's website](https://kagescan.legtux.org) public source code.  
 Under the MIT license, please read the file COPYING for more informations.
 
 This repository contains the public source code of kagescan website.  

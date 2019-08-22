@@ -1,4 +1,7 @@
 # Kagescan
+<p align="center">
+  <img src="https://kagescan.legtux.org/res/img/logo.NoOutline.min.jpg"/>
+</p>
 
 [Kagescan's website](https://kagescan.legtux.org) public source code.  
 Under the MIT license, please read the file COPYING for more informations.

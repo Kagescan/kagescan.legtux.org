@@ -1,0 +1,605 @@
+{
+  "_comment": "Database made by ShinProg (Logan Tann). Feel free to use this file, as much as you respect the MIT license provided in the /COPYING file.",
+	"albums":{
+		"story":[
+			{
+				"name":"Mekakucity Days",
+				"albumArt":"img/mekakudays.jpg",
+				"description":"Mekakucity Days est le premier album \"histoire\" de la s&eacute;rie vocaloid. Le CD propose 13 pistes, la plupart des musiques étant sorties entre 2011 et 2012.",
+				"funFact":"Fun Fact : Jin a tout d'abord voulu nommer le projet \"Mekakucity Project\" et l'album \"Mekakucity Actors\".<br>Mais comme Kagerou Days &eacute;tait la chanson la plus connue, il d&eacute;cida de renommer la s&eacute;rie \"Kagerou Project\" et son album final \"Mekakucity days\".<br><br>Mon avis sur cet album : J'adore le style de jin sur ses premières musiques. On entend beaucoup de guitare électronique et quelques effets électro !",
+				"releaseDate":"30 mai 2012",
+				"jp":"&#12513;&#12459;&#12463;&#12471;&#12486;&#12451;&#12487;&#12452;&#12474; (Mekakushitideizu)",
+				"trad":"Blindfold City Days (La journée de la ville aux yeux bandés)",
+				"spotifyId":"6vQOvCYXDXyeEd3cIsXx05",
+				"youtubeId":"PLVM55VKRXb3K3zCEnzkA_X41V-uplOWm8",
+				"youtubeComment":"Pas de traductions françaises pour les instrumentaux, Mekakushi Code, Ene no Dennou Kikou et Dead and Seek. Les musiques suivantes ne sont pas les musiques originales (chantées par vocaloid) : Tomei Answer.",
+				"appleLink":"https://itunes.apple.com/fr/album/mekakucitydays/id538277103",
+				"amazonLink":"https://www.amazon.fr/dp/B007N6SBAU",
+				"trackList":[
+					[
+						"01",
+						"Lost Time Prologue",
+						"Instrumental",
+						"0:49"
+					],
+					[
+						"02",
+						"Jinzou Enemy",
+						"Hatsune Miku",
+						"4:02"
+					],
+					[
+						"03",
+						"Mekakushi Code",
+						"Hatsune Miku",
+						"3:48"
+					],
+					[
+						"04",
+						"Kagerou Days",
+						"Hatsune Miku",
+						"3:54"
+					],
+					[
+						"05",
+						"Headphone Actor",
+						"IA",
+						"3:37"
+					],
+					[
+						"06",
+						"Souzou Forest",
+						"IA",
+						"4:18"
+					],
+					[
+						"07",
+						"Toumei Answer",
+						"IA",
+						"4:16"
+					],
+					[
+						"08",
+						"Ene no Dennou Kikou",
+						"IA",
+						"4:16"
+					],
+					[
+						"09",
+						"Konoha no Sekai Jijou",
+						"Hatsune Miku + IA",
+						"3:07"
+					],
+					[
+						"10",
+						"Kisaragi Attention",
+						"IA",
+						"4:04"
+					],
+					[
+						"11",
+						"Shinigami Record",
+						"IA",
+						"2:58"
+					],
+					[
+						"12",
+						"Dead and Seek",
+						"IA",
+						"3:25"
+					],
+					[
+						"13",
+						"Kaien Panzermast",
+						"Instrumental",
+						"1:08"
+					]
+				],
+				"totTime":"42:57 min"
+			},
+			{
+				"name":"Mekakucity Records",
+				"albumArt":"img/mekakurecords.jpg",
+				"description":"Mekakucity Records est le second album de la série. Comme son prédécesseur, il contient 13 pistes, la plupart des musiques étant sorties entre 2012 et 2013.<br>Il marque la fin de la première saison vocaloid.",
+				"funFact":"Fun Fact : Avec l'accent japonais <b>MekakuCi</b>ty et <b>MekakuShi</b>-dan se prononcent de la même façon (phonétique française : mékackshi). Jin a sans doute voulu faire un jeu de mots entre les protagonistes (Mekakushi dan) et le lieu d'action (rural). <br> Quant au mot \"Records\", il peut avoir deux traductions : les souvenirs/enregistrements mais aussi un disque musical.<br><br>Mon avis sur cet album : Il contient les musiques ayant eu le plus de succès (Lost Time Memory, Children Record, Outer Science...), un incontournable !",
+				"releaseDate":"29 mai 2013",
+				"jp":"&#12513;&#12459;&#12463;&#12471;&#12486;&#12451;&#12524;&#12467;&#12540;&#12474; (Mekakushitirek&#333;zu)",
+				"trad":"Blindfold City Records (Les enregistrement de la ville aux yeux bandés)",
+				"spotifyId":"",
+				"youtubeId":"PLVM55VKRXb3JpnxR2atyNTTNyD8K_ZQgo",
+				"youtubeComment":"Pas de traductions françaises pour Shounen Brave, Marry no Kakuu Sekai. Les musiques suivantes ne sont pas les musiques originales (chantées par vocaloid) : Yobanashi Deceive.",
+				"appleLink":"https://itunes.apple.com/jp/album/mekakushitirekozu/id645847731",
+				"amazonLink":"https://www.amazon.fr/dp/B00C1P3G5I",
+				"trackList":[
+					[
+						"01",
+						"Summer Endroll",
+						"instrumental",
+						"0:48"
+					],
+					[
+						"02",
+						"Children Record -Re Ver.-",
+						"IA",
+						"3:02"
+					],
+					[
+						"03",
+						"Yobanashi Deceive",
+						"IA",
+						"3:22"
+					],
+					[
+						"04",
+						"Shounen Brave",
+						"IA",
+						"4:33"
+					],
+					[
+						"05",
+						"Yuukei Yesterday",
+						"IA",
+						"3:53"
+					],
+					[
+						"06",
+						"Gunjou Rain -Re Ver.-",
+						"IA",
+						"5:23"
+					],
+					[
+						"07",
+						"Outer Science",
+						"IA",
+						"3:35"
+					],
+					[
+						"08",
+						"Otsukimi Recital",
+						"IA",
+						"3:41"
+					],
+					[
+						"09",
+						"Lost Time Memory",
+						"IA",
+						"4:46"
+					],
+					[
+						"10",
+						"Ayano no Koufuku Riron",
+						"IA",
+						"5:37"
+					],
+					[
+						"11",
+						"Marry no Kakuu Sekai",
+						"IA",
+						"2:59"
+					],
+					[
+						"12",
+						"Crying Prologue",
+						"instrumental",
+						"0:41"
+					],
+					[
+						"13",
+						"Summertime Record",
+						"IA",
+						"4:35"
+					]
+				],
+				"totTime":""
+			},
+			{
+				"name":"Mekakucity Reload",
+				"albumArt":"img/mekakuReload.jpg",
+				"description":"Mekakucity Reload est le 3e album de la série. Il contient 9 pistes. Sa version limitée A inclus le manga Lost Day Hour et sa version limitée B un cover acoustique de Jin sur les musiques Never lost word, Lost day hour, Remind blue et Fireworks in the summer end. Acheté depuis le site CDJAPAN, deux posters (Additional Memory, Album Art) sont offerts (selon la disponibilité).",
+				"funFact":"Fun Fact : Une suite de l'album est prévue pour l'année 2019/2020.<br><br>Mon avis sur cet album : Bien qu'il contienne plein de trucs cools (imaginary reload, additional memory ou des posters offerts avec) il ne vaut pas vraiment son prix compte tenu de seulement 7 musiques contre 11 pour les précédents, et je n'ai pas trouvé le côté \"rock\" des anciens albums excepté Additional Memory et Imaginary Reload...",
+				"releaseDate":"7 novembre 2018",
+				"jp":"&#12513;&#12459;&#12463;&#12471;&#12486;&#12451;&#12522;&#12525;&#12540;&#12489; (Mekakushiti Rir&#333;do)",
+				"trad":"Blindfold City Reload (Le rechargement de la ville aux yeux bandés)",
+				"spotifyId":"78fKdFzPzErb404MCxx21i",
+				"youtubeId":"",
+				"youtubeComment":"Traductions françaises faites mais non publiées sur youtube (en attendant leurs MV), excepté pour Never Lost Words et Additional Memory.",
+				"appleLink":"https://music.apple.com/fr/album/mekakucity-reload/1439036463",
+				"amazonLink":"http://www.cdjapan.co.jp/product/TYCT-69136",
+				"trackList":[
+					[
+						"01",
+						"Ever Youth Roadshow",
+						"Instrumental",
+						"0:30"
+					],
+					[
+						"02",
+						"Imaginary Reload",
+						"Hatsune Miku",
+						"4:01"
+					],
+					[
+						"03",
+						"Shissou Word",
+						"Hatsune Miku",
+						"4:53"
+					],
+					[
+						"04",
+						"My Funny Weekend",
+						"Hatsune Miku",
+						"4:28"
+					],
+					[
+						"05",
+						"Additional Memory",
+						"Hatsune Miku",
+						"4:00"
+					],
+					[
+						"06",
+						"Lost Day Hour",
+						"Hatsune Miku",
+						"4:10"
+					],
+					[
+						"07",
+						"Remind Blue",
+						"Hatsune Miku",
+						"4:57"
+					],
+					[
+						"08",
+						"Wasurete Shimatta Natsu no Owari ni",
+						"Hatsune Miku",
+						"3:30"
+					],
+					[
+						"09",
+						"Goodbye Summer Wars",
+						"Instrumental",
+						"0:43"
+					]
+				],
+				"totTime":"30:47"
+			}
+		],
+		"themes":[
+			{
+				"name":"daze/days",
+				"albumArt":"img/daze.jpg",
+				"description":"Cet album contient les openings/endings de l'animé de la série, Mekakucity Actors. On peut y trouver les versions courtes, longes, instrumentales et vidéo des deux thèmes, ainsi qu'une piste bonus intitulée \"The old days\" racontant la première rencontre entre Shintaro et Ayano (piste incluse uniquement sur l'édition limitée A).",
+				"funFact":"Fun Fact : Il existe une version IA-ROCKS de cet album. Celui-ci est interprété par IA et contient quelques remix super sympas !<br><br>Mon avis sur cet album : Daze et Days sont des musiques justes géniales, y compris leurs remix ! Cependant, si je devais faire le choix, j'achèterais plutôt les albums Histoires qui ont des titres plus diversifiés...",
+				"releaseDate":"18 juin 2014",
+				"jp":"daze / days",
+				"trad":"(confusion / jours)",
+				"spotifyId":"5mF3K3KCtpfzQV7MLZdKhF",
+				"youtubeId":"",
+				"youtubeComment":"Playlist à venir",
+				"appleLink":"https://itunes.apple.com/jp/album/daze-days-ep/id878611097",
+				"amazonLink":"https://www.amazon.fr/dp/B00JJ28YGM",
+				"trackList":[
+					[
+						"01",
+						"Daze",
+						"MARiA",
+						"3:52"
+					],
+					[
+						"02",
+						"Days",
+						"Lia",
+						"5:46"
+					],
+					[
+						"03",
+						"Daze (Short version)",
+						"MARiA",
+						"1:30"
+					],
+					[
+						"04",
+						"Days (Short version)",
+						"Lia",
+						"1:30"
+					],
+					[
+						"05",
+						"Daze",
+						"instrumental",
+						"3:52"
+					],
+					[
+						"06",
+						"Days",
+						"instrumental",
+						"5:46"
+					]
+				],
+				"totTime":"22:56 (hors DVD/drama CD)"
+			},
+			{
+				"name":"Mekakucity M's",
+				"albumArt":"img/ms.jpg",
+				"description":"Cet album contient les musiques présentes dans l'animé (covers, OSTs pour sa version limitée). Il existe en une version simple (2 albums) qui contient les covers officiels de l'animé, et une version limitée qui possède les bandes originales en plus !",
+				"funFact":"Fun Fact : Les pistes musicales ont été créé par beaucoup de personnalités connues : à commencer par Jin lui-même (Kagerou Project) mais aussi ANANT-GARDE EYES (Angel Beats, Charlotte), Luna Haruna (ending 2 de SAO), LiSA (Angel Beats!, SAO, Fate/zero), TeddyLoid (IA project)<br><br>Mon avis sur cet album : il est unique... Aussi pour son prix vertigineux (110 €) ! Il reste tout de même le Saint Graal du fan Kagerou Project.",
+				"releaseDate":"1er Avril 2015",
+				"jp":"MEKAKUCITY M’s ~&#12513;&#12459;&#12463;&#12471;&#12486;&#12451;&#12450;&#12463;&#12479;&#12540;&#12474;&#12539;&#12532;&#12457;&#12540;&#12459;&#12523;&&#12469;&#12454;&#12531;&#12489; &#12467;&#12524;&#12463;&#12471;&#12519;&#12531;~ (Mekakushiti Akutaazu voocaru & saundo korekushon~)",
+				"trad":"Mekakucity Actors Vocal & Sound Collection (ça sonne moins badass si je traduis en français...)",
+				"spotifyId":"../playlist/2bcL4bGfccPv1ynfm0cQLR",
+				"youtubeId":"",
+				"youtubeComment":"playlist youtube encore incomplète pour le moment",
+				"appleLink":"https://www.amazon.fr/dp/B00SJTAYSW",
+				"amazonLink":"https://itunes.apple.com/fr/album/id1148644769",
+				"trackList":[
+					[
+						"01",
+						"à venir... il y a 76 titres à taper à la main...",
+						"",
+						""
+					]
+				],
+				"totTime":"03:52:15"
+			},
+			{
+				"name":"RED / KAGEROU DAZE -in a day's- Music Collection",
+				"albumArt":"img/red.jpg",
+				"description":"L'album RED contient le thème principal du film MX4D Kagerou Daze -in a day's- en versions courte, longue et instrumentale. Ce dernier n'est plus en vente. <br>Un autre album, KAGEROU DAZE -in a day's- Music Collection, contient avec les OSTs et est vendu avec l'édition limitée du blu-ray. <b>La liste des musiques (si vous cliquez sur le bouton dédié) correspond à ce dernier album !</b>",
+				"funFact":"Fun Fact : L'album marque l'appartenance de Jin à un nouveau groupe de musique : Gouache. On ne sait pas encore si cela est d'actualité car l'auteur continue de produire seul, en tout cas, il publie sous le label Edword Records plutôt que IA Project après la sortie de l'album.<br><br>Mon avis sur l'album : Le blu-ray n'est à acheter que pour les musiques et l'édition limitée (difficilement trouvable)... Vous pourrez trouver une traduction du film sur notre chaîne youtube, et ma critique ici : <a href='https://www.anime-planet.com/users/ShinProg/reviews/45916'>anime-planet.com/users/ShinProg/reviews/45916</a>",
+				"releaseDate":"6 novembre 2016 (RED) | 14 mars 2018 (blu-ray+soundtracks)",
+				"jp":"RED",
+				"trad":"(rouge)",
+				"spotifyId":"",
+				"youtubeId":"",
+				"youtubeComment":"playlist à venir. si quelqu'un aurait aussi les liens apple et spotify, contactez moi...",
+				"appleLink":"",
+				"amazonLink":"https://www.amazon.co.jp/dp/B078JG4QXW/",
+				"trackList":[
+					[
+						"01",
+						"RED",
+						"Jin, MARiA",
+						"4:06"
+					],
+					[
+						"02",
+						"TERRORIST",
+						"(Out of service, Jin ?)",
+						"1:30"
+					],
+					[
+						"03",
+						"サマータイムレコード",
+						"(Out of service, Jin ?)",
+						"1:38"
+					],
+					[
+						"04",
+						"HEARTBEAT",
+						"(Out of service, Jin ?)",
+						"0:48"
+					],
+					[
+						"05",
+						"ACTION !",
+						"(Out of service, Jin ?)",
+						"0:59"
+					],
+					[
+						"06",
+						"MISSION",
+						"(Out of service, Jin ?)",
+						"1:13"
+					],
+					[
+						"07",
+						"夕景イエスタデイ",
+						"(Out of service, Jin ?)",
+						"0:49"
+					],
+					[
+						"08",
+						"TACTICS",
+						"(Out of service, Jin ?)",
+						"2:18"
+					],
+					[
+						"09",
+						"SPOOKY",
+						"(Out of service, Jin ?)",
+						"1:01"
+					],
+					[
+						"10",
+						"Decisive battle",
+						"(Out of service, Jin ?)",
+						"3:11"
+					],
+					[
+						"11",
+						"RED (instrumental)",
+						"Jin",
+						"4:00"
+					],
+					[
+						"12",
+						"RED (movie version)",
+						"Jin, MARiA",
+						"1:55"
+					]
+				],
+				"totTime":"23:28"
+			}
+		],
+		"additional":[
+			{
+				"name":"Mekakucity V's",
+				"albumArt":"img/mekakuvs.jpg",
+				"description":"Ceci n'est pas vraiment un album à proprement parler... Mekakucity V's est un album de DVDs (aussi en format blu-ray) qui propose toutes les versions vidéos des musiques de la série, dont la musique exclusive Shounen Brave.<br>L'édition limitée possède deux livrets contenant les storyboards et autres brouillons qui ont permis à la réalisation des vidéos.",
+				"funFact":"Mon avis sur cet album : Perso, j'aurai acheté d'autres albums car les vidéos sont trouvables sur youtube. MAIS le livret de l'édition limité est vraiment intéressant, j'aurais acheté l'album juste pour ça !",
+				"releaseDate":"1er janvier 2014",
+				"jp":"Mekakucity V's",
+				"trad":"(les vidéos de la ville aux yeux bandés)",
+				"spotifyId":"",
+				"youtubeId":"",
+				"youtubeComment":"",
+				"appleLink":"",
+				"amazonLink":"https://www.amazon.fr/dp/B00GFUY5SC",
+				"trackList":[
+					[
+						"01",
+						"Kagerou Daze",
+						"?",
+						"?"
+					],
+					[
+						"02",
+						"Headphone Actor",
+						"?",
+						"?"
+					],
+					[
+						"03",
+						"Kuusou Forest",
+						"?",
+						"?"
+					],
+					[
+						"04",
+						"Konoha no Sekai Jijoui",
+						"?",
+						"?"
+					],
+					[
+						"05",
+						"Kisaragi Attention",
+						"?",
+						"?"
+					],
+					[
+						"06",
+						"Toumei Answer",
+						"?",
+						"?"
+					],
+					[
+						"07",
+						"Children Record",
+						"?",
+						"?"
+					],
+					[
+						"08",
+						"Yobanashi Deceive",
+						"?",
+						"?"
+					],
+					[
+						"09",
+						"Lost Time Memory",
+						"?",
+						"?"
+					],
+					[
+						"10",
+						"Ayano no Koufuku Riron",
+						"?",
+						"?"
+					],
+					[
+						"11",
+						"Yuukei Yesterday",
+						"?",
+						"?"
+					],
+					[
+						"12",
+						"Outer Science",
+						"?",
+						"?"
+					],
+					[
+						"13",
+						"Shounen Brave",
+						"?",
+						"?"
+					]
+				],
+				"totTime":"?"
+			},
+			{
+				"name":"Children Record",
+				"albumArt":"img/childrenrecord.jpg",
+				"description":"Children Record est le premier single de la série. Il contient deux musiques inédites : Children Record et Gunjou Rain. Jin se sert de la musique Children Record comme musique d'ouverture à la série, et c'est de cet album qu'a été annoncé une adaptation animée.",
+				"funFact":"Fun Fact : Jin publie les versions instrumentales sur son <a href=\"https://piapro.jp/jin_jin_suruyo\">compte piapro</a> ! Au cas où vous voudriez faire des covers... Mon avis sur l'album : achetez Mekakucity Records.",
+				"releaseDate":"15 août 2012",
+				"jp":"&#12481;&#12523;&#12489;&#12524;&#12531;&#12524;&#12467;&#12540;&#12489; (Chirudoren Rek&#333;do)",
+				"trad":"Children Record (enregistrement des enfants)",
+				"spotifyId":"",
+				"youtubeId":"",
+				"youtubeComment":"Pas de traductions françaises pour . Les musiques suivantes ne sont pas les musiques originales (chantées par vocaloid) : .",
+				"appleLink":"https://itunes.apple.com/jp/album/chirudorenrekodo-ep/id5755211603",
+				"amazonLink":"https://www.amazon.fr/dp/B0085DWCIC",
+				"trackList":[
+					[
+						"01",
+						"Children Record",
+						"IA",
+						"3:05"
+					],
+					[
+						"02",
+						"Gunjou Rain",
+						"IA",
+						"5:26"
+					],
+					[
+						"03",
+						"Children Record",
+						"Instrumental",
+						"3:05"
+					],
+					[
+						"04",
+						"Gunjou Rain",
+						"Instrumental",
+						"5:21"
+					]
+				],
+				"totTime":"  16:57 "
+			},
+			{
+				"name":"Live In Mekakucity - Summer 13",
+				"albumArt":"img/liveinmekaku.jpg",
+				"description":"Le blu-ray du concert de Jin qui a eu lieu en aout 2013 au Tokyo Zepp Divercity. Il inclut un booklet et un bonus inédit.",
+				"funFact":"Mon avis sur l'album : je peux juste dire que ce live est aussi trouvable sur internet (youtube et autres).",
+				"releaseDate":"?",
+				"jp":"&#12521;&#12452;&#12502;&#12452;&#12531;&#12513;&#12459;&#12463;&#12471;&#12486;&#12451; SUMMER '13",
+				"trad":"(Concert en direct dans la ville aux yeux bandés)",
+				"spotifyId":"",
+				"youtubeId":"",
+				"youtubeComment":"",
+				"appleLink":"",
+				"amazonLink":"http://www.cdjapan.co.jp/product/MHXL-17",
+				"trackList":[ [ "?", "?", "?", "?"] ],
+				"totTime":"?"
+			},
+			{
+				"name":"Mekakucity Actors - Blu Ray Limited Edition",
+				"albumArt":"img/mekaku1.jpg",
+				"description":"Chaque version limitée des épisodes blu-ray de Mekakucity Actors comprennent une musique tirée de l'album Mekakucity M's, avec leurs versions instrumentales.",
+				"funFact":"Mon avis sur l'album : Bon choix ! En plus des musiques, vous avez le remake blu-ray de l'animé. Mais achetez en priorité le volume 9 rien que pour son opening !",
+				"releaseDate":"?",
+				"jp":"",
+				"trad":"",
+				"spotifyId":"",
+				"youtubeId":"",
+				"youtubeComment":"",
+				"appleLink":"",
+				"amazonLink":"http://www.cdjapan.co.jp/series/3856?term.media_format=bluray&page=1&opt.on_released=0&opt.on_preorder=0&range.rel=2014-06-25%2C2014-12-31&term.release_month=&order=rel",
+				"trackList":[ [ "?", "?", "?", "?"] ],
+				"totTime":"?"
+			}
+		]
+	}
+}

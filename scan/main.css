@@ -1,6 +1,29 @@
 /*! Kagescan Manga Engine 2.0.0
  * @license MIT Copyright (C) 2017-2019 ShinProg / Kagescan*/
 
+ @font-face {
+   font-family: 'Material Icons';
+   font-style: normal;
+   font-weight: 400;
+   src: url(/res/icons.woff2) format('woff2');
+ }
+
+ .material-icons {
+   font-family: 'Material Icons';
+   font-weight: normal;
+   font-style: normal;
+   font-size: 24px;
+   line-height: 1;
+   letter-spacing: normal;
+   text-transform: none;
+   display: inline-block;
+   white-space: nowrap;
+   word-wrap: normal;
+   direction: ltr;
+   -moz-font-feature-settings: 'liga';
+   -moz-osx-font-smoothing: grayscale;
+ }
+
 /*
 	GENERAL
 */
@@ -158,11 +181,14 @@ main i.material-icons, #mangaSticky i.material-icons {
 		color: white;
 		background: #37474f;
 	}
+	#mangaNav>div>a {
+		color: white;
+	}
 #mangaView {
     flex-shrink: 3;
     overflow: hidden;
     position: relative;
-    cursor: url("https://kagescan.legtux.org/res/img/right.png"),auto;
+    cursor: url("/res/img/right.png"),auto;
 }
 .vertical #mangaView{
 	cursor: pointer;
@@ -181,7 +207,7 @@ main i.material-icons, #mangaSticky i.material-icons {
 	left: 10px;
 	z-index: 2;
 	width: 50%;
-	cursor: url("https://kagescan.legtux.org/res/img/left.png"),auto !important;
+	cursor: url("/res/img/left.png"), auto !important;
 }
 .vertical #prevClickTrigger{
 	display: none;
@@ -249,4 +275,3 @@ main i.material-icons, #mangaSticky i.material-icons {
 	#mangaSettings>div input[type="range"]{
 		border:none;
 	}
-		

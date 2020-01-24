@@ -6,27 +6,44 @@
   <head></head>
   <body class="grey darken-4">
     <?php include("../res/private/header.html"); ?>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="/res/materialize.min.js"></script>
     <script>
-      var linksInner = "Liens";
-      var pageType = 3;
+	  var globals = {
+		pageType: 3,
+	  	currentPage: 0,
+		linksInner: "Liens"
+	  };
     </script>
-    <script src="/scan-dev/main.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link rel="stylesheet" href="/scan-dev/main.css"/>
-    <main id="tagMain"  class="animations vertical">
+    <script src="/scan/main.js"></script>
+    <link rel="stylesheet" href="/res/materialize.min.css">
+    <link rel="stylesheet" href="/scan/main.css"/>
+    <main id="tagMain"  class="animations ">
       <div id="mangaSticky" class="grey darken-4">
         <div id="mangaNav" class="row container blue-grey darken-4">
-          <div class="col s3 m1"><a id="linkPrev" href="../">prev</a></div>
-          <div class="col s6 m3"><select class="browser-default" id="chapterSelect"><option>chap</option></select></div>
-          <div class="col s3 m1"><a id="linkNext" href="../2/">next</a></div>
-
-          <div class="col s6 m1">thumbs</div>
-          <div class="col s6 m1">settings</div>
-
-          <div class="col s3 m1">prev</div>
-          <div class="col s6 m3"><select class="browser-default" id="pageSelect"><option>page</option></select></div>
-          <div class="col s3 m1">next</div>
+          <div class="col s3 m1"><a id="linkPrev" href="../">
+			  <i class='material-icons'>arrow_back</i>
+		  </a></div>
+          <div class="col s6 m3">
+			  <select class="browser-default" id="chapterSelect"><option>Loading chapters...</option></select>
+		  </div>
+          <div class="col s3 m1"><a id="linkNext" href="../2/">
+			  <i class='material-icons'>arrow_forward</i>
+		  </a></div>
+          <div class="col s6 m1"><a onclick="toggle('mangaThumb',this)" href="#!">
+			  <i class='material-icons'>view_carousel</i>
+		  </a></div>
+          <div class="col s6 m1"><a href="#!">
+			  <i class='material-icons'>settings</i>
+		  </a></div>
+          <div class="col s3 m1"><a>
+			  <i class='material-icons'>navigate_before</i>
+		  </a></div>
+          <div class="col s6 m3">
+			  <select class="browser-default" id="pageSelect"><option>page</option></select>
+		  </div>
+          <div class="col s3 m1">
+			  <i class='material-icons'>navigate_next</i>
+		  </div>
         </div>
         <div id="mangaThumb" class="hide">
         </div>
@@ -39,11 +56,14 @@
     		<div id="mangaView">
           <div id="prevClickTrigger"></div>
     			<div id="mangaPages">
-    				<div data-i="0"> <img src="https://kagescan.legtux.org/scan/1/1.jpg"/> </div>
-    				<div data-i="1"> <img src="https://kagescan.legtux.org/scan/1/2.jpg"/> </div>
-    				<div data-i="2"> <img src="https://kagescan.legtux.org/scan/1/3.jpg"/> </div>
-    				<div data-i="3"> <img src="https://kagescan.legtux.org/scan/1/4.jpg"/> </div>
-    				<div data-i="4"> <img src="https://kagescan.legtux.org/scan/1/5.jpg"/> </div>
+					<?php
+					// TODO: make it php
+					?>
+    				<div data-i="0"> <img src="/scan/kagerou-days/1/1.webp"/> </div>
+    				<div data-i="1"> <img src="/scan/kagerou-days/1/2.webp"/> </div>
+    				<div data-i="2"> <img src="/scan/kagerou-days/1/3.webp"/> </div>
+    				<div data-i="3"> <img src="/scan/kagerou-days/1/4.webp"/> </div>
+    				<div data-i="4"> <img src="/scan/kagerou-days/1/5.webp"/> </div>
     			</div>
     		</div>
     	</div>

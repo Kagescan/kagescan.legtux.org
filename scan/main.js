@@ -4,11 +4,12 @@
 
 // HELPERS //
 	var loadErrorCallback = function(error) { // display an alert message
-		alert(`Attention : KageScan est incapable de charger la base de donnée du manga spécifié. La navigation risque de ne pas fonctionner correctement.
-	Veuillez re-essayer et si le problème persisite, contactez un administrateur.
-
-	Informations sur l'erreur :
-	${error}`);
+		alert( 'Attention :\n'
+		 +'KageScan est incapable de charger la base de donnée du manga spécifié. La navigation risque de ne pas fonctionner correctement.\n'
+		 +'Veuillez re-essayer et si le problème persisite, contactez un administrateur.\n'
+		 +'Informations sur l\'erreur :\n'
+		 + error
+		);
 	};
 	function loadJSON(location, callbackOk, callbackNo) { //helper to load Json
 		var xobj = new XMLHttpRequest();
@@ -25,14 +26,15 @@
 		xobj.send(null);
 	}
 // CORE //
+	// chapter selection page display
 	function displayDescription(e) {
 		toChange = document.querySelector(`#${e.parentNode.dataset.volid} .chapDescription`);
 		toChange.innerHTML = `<img class='responsive-img' src='${e.dataset.previewimg}'/>`;
 	}
+	// chapter content display
 	function thumbClick(e) {
 		const me = e.target || e.srcElement;
-		globals.currentPage = parseInt(me.parentNode.dataset.i);
-		setIndex();
+		setIndex( parseInt(me.parentNode.dataset.i) );
 	}
 	function move(dir=true) { // True : next slide, false : previous slide
 		const pages = document.getElementById('mangaPages');
@@ -40,27 +42,31 @@
 			if (globals.currentPage < pages.children.length-1) {
 				globals.currentPage++;
 			} else {
-				return window.location.replace(document.getElementById('linkNext').href);
+				return window.location.href = document.getElementById('linkNext').href;
 			}
 		} else { // Previous
 			if (globals.currentPage > 0) {
 				 globals.currentPage--;
 			} else {
-				return window.location.replace(document.getElementById('linkPrev').href);
+				return window.location.href = document.getElementById('linkPrev').href;
 			}
 		}
 		setIndex();
 	}
-	function setIndex(index) { // move to the [index]th slide
+	function setIndex(index=undefined) { // display the page globals.
+		if (typeof(index) == "number") {
+			globals.currentPage = index;
+		}
 		const pages = document.getElementById('mangaPages');
 		const thumbContainer = document.getElementById("mangaThumb");
 
 		// scroll to view
 		if (document.getElementById('tagMain').classList.contains("vertical")) {
-		    //console.log(pages.children[index].getClientRects()[0], pages.children[index].offsetTop)
-		    //pages.offsetParent.offsetTop + pages.children[index].offsetTop - document.getElementById("mangaSticky").getClientRects()[0].height
-			//window.scrollTo(0,
-			//    );
+			const mangaView = document.getElementById("mangaView");
+			const image = document.querySelector(`#mangaPages>div[data-i='${globals.currentPage}']`);
+			const mangaStickyRect = document.getElementById("mangaSticky").getClientRects()[0];
+
+		    window.scrollTo(0, mangaView.offsetTop + image.offsetTop - mangaStickyRect.height);
 		} else { //horizontal
 			pages.style.transform = `translateX(${-100*globals.currentPage}%)`;
 		}
@@ -69,15 +75,11 @@
 		document.querySelector("#mangaThumb .active").classList.remove("active");
 		thumbContainer.children[globals.currentPage].classList.add("active");
 
-		// center the selected thumbnailglobals.currentPage
+		// centers the selected thumbnail
 		if (! thumbContainer.classList.contains("hide")) {
 			thumbContainer.scrollTo(thumbContainer.children[globals.currentPage].offsetLeft - thumbContainer.offsetLeft - thumbContainer.getClientRects()[0].width*0.5 - 10, 0); // center the view of thumbnails
 		}
-		document.getElementById("pageSelect").value = globals.currentPage
-		globals.currentPage;
-	}
-	function changeChapter(i) { // redirect to ../i
-		window.location.href = `../${encodeURIComponent(i)}`;
+		document.getElementById("pageSelect").value = globals.currentPage;
 	}
 	function toggle(id, button=-1) {
 	    document.getElementById(id).classList.toggle("hide");
@@ -100,32 +102,41 @@
 // MAIN //
 
 	document.addEventListener('DOMContentLoaded', function() {
+		// Materialize init
 		document.getElementById("scrollSpyLinks").innerHTML = globals.linksInner;
 		document.getElementById("navLinkManga").style.fontWeight = "bold";
 		document.getElementById("navLinkManga").classList.add("red-text","text-darken-4");
 		M.Sidenav.init( document.querySelectorAll('.sidenav') );
-		// The variable pageType was previously defined
-		if (globals.pageType == 3) { // Read chapter part
-			document.getElementById("mangaView").addEventListener("click", function(e) {
-				move((e.target.id=="prevClickTrigger")? 0:1);
-			});
-			// var
+
+		// The variable pageType was previously defined by the php code
+		if (globals.pageType == "reader") { // Read chapter part
+			/* VARS */
 			const mangaContainer = document.getElementById("mangaPages");
 			const thumbContainer = document.getElementById("mangaThumb");
 			let inner = "";
-			// page generation + events
+
+			/* PAGE GENERATION + EVENTS */
+			// add event for navigation clics
+			document.getElementById("mangaView").addEventListener("click", function(e) {
+				// TODO: adapt for the vertical navigation.
+				move((e.target.id=="prevClickTrigger")? 0:1);
+			});
+			// don't make the kagescan bar fixed.
+			document.getElementById("stickyNav").style = "";
+
+			// generate thumb bar + his event and the pageSelect elem
 			thumbContainer.innerHTML = mangaContainer.innerHTML;
 			for (var i = 0; i < thumbContainer.children.length; i++) {
 				thumbContainer.children[i].addEventListener('click', thumbClick);
 				inner += `<option value='${i}'>Page ${i+1}/${thumbContainer.children.length}</option>`;
 			}
-			document.getElementById("pageSelect").innerHTML = inner;
-			// init
 			thumbContainer.children[0].classList.add("active");
-			mangaContainer.dataset.i = thumbContainer.children[0].dataset.i;
+			document.getElementById("pageSelect").innerHTML = inner;
+
 			// page generation, second part
 			loadJSON("../manga.json", generatePage, loadErrorCallback);
-		} else if (globals.pageType==2) { // Select chapter part
+
+		} else if (globals.pageType=="chapterSelect") { // Select chapter part
 			M.Carousel.init( document.querySelectorAll('#scan_chapterSelect .carousel'), {
 				noWrap: true,
 				indicators: true,
@@ -150,15 +161,44 @@
 			});
 		});
 		document.getElementById("chapterSelect").innerHTML = inner;
+
+		/* Final init */
+		setIndex();
 	}
 	window.addEventListener("keydown", function(e) {
 		switch (e.code) {
-			case 'KeyA': window.location.replace(document.getElementById('linkPrev').href); break;
-			case 'KeyD': window.location.replace(document.getElementById('linkNext').href); break;
+			case 'KeyA': window.location.href = document.getElementById('linkPrev').href; break;
+			case 'KeyD': window.location.href = document.getElementById('linkNext').href; break;
 			case 'ArrowLeft': return move(0);
 			case 'ArrowRight': return move(1);
 			default: break;
 		}
 	}, true);
 
+	//var debounce_timer;
+	window.onscroll = function(event) {
+		if (globals.pageType == "reader"){
+			const mangaSticky = document.getElementById("mangaSticky");
+			const mangaDescription = document.getElementById("mangaDescription");
+			const scrollbarTop = (globals.scrollbarTop) ? globals.scrollbarTop : mangaSticky.offsetTop;
+			if (window.scrollY > scrollbarTop) {
+				if (mangaSticky.style.position != "fixed"){
+					mangaSticky.style.position = "fixed";
+					mangaDescription.style.paddingTop = `${mangaSticky.getClientRects()[0].height}px`;
+					globals.scrollbarTop = scrollbarTop;
+				}
+			} else {
+				mangaDescription.style.paddingTop = "";
+				mangaSticky.style = "";
+			}
+		}
+		/*
+		Enable this if you want to
+		if (debounce_timer) {
+			window.clearTimeout(debounce_timer);
+		}
+		debounce_timer = window.setTimeout(function(){
+			console.log(window.scrollY);
+		}, 100);*/
+	};
 	//window.onload = (event) => { Pace.stop(); };

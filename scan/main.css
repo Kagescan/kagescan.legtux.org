@@ -27,9 +27,7 @@
 /*
 	GENERAL
 */
-html{
-    scroll-behavior: smooth;
-}
+
 .pace .pace-progress {
     position: fixed;
     z-index: 20;
@@ -48,12 +46,12 @@ html{
     color: white;
     background: rgba(0,0,0,0.5);
 }
-main {
-	padding-top: 64px;
+
+html{
+    scroll-behavior: smooth;
 }
-#scrollSpyLinks .material-icons {transform: translate(15px,7px);}
-.page-footer{
-	background-color: #B71C1C !important;
+main {
+
 }
 main h1 {
 	font-size: 3rem;
@@ -65,12 +63,18 @@ h3 {
 a {
 	color: #00b0ff;
 }
+#scrollSpyLinks .material-icons {transform: translate(15px,7px);}
+
+.page-footer{
+	background-color: #B71C1C !important;
+}
 
 main.animations #mangaPages {transition: transform .5s ease;}
 main.animations #chapterList>div {transition: transform 0.5s;}
 main.animations i.material-icons {transition: color 0.5s;}
 main.animations #mangaThumb>div {transition: opacity 0.5s;}
 main.vertical #mangaPages {flex-direction: column;}
+
 /*
 	MANGA SELECT
 */
@@ -157,15 +161,14 @@ main i.material-icons, #mangaSticky i.material-icons {
     text-align:center;
 }
 #mangaSticky{
-    top:64px;
-    left:0;
-    position:fixed;
+	position: relative;
+    top:0px;
     display:block;
 	width: 100%;
 	z-index: 3;
 }
 #mangaDescription{
-    margin-top: 80px;
+
 }
 #mangaNav {
 	margin-top: 20px;
@@ -226,6 +229,9 @@ main i.material-icons, #mangaSticky i.material-icons {
 	  max-height: 100%;
 	  max-width: 98%;
 	  margin: auto;
+	}
+	#mangaPages>div img{
+		margin-top: 10px;
 	}
 #mangaThumb{
     margin-top: 15px;

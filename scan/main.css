@@ -184,7 +184,7 @@ main i.material-icons, #mangaSticky i.material-icons {
 		color: white;
 		background: #37474f;
 	}
-	#mangaNav>div>a {
+	#mangaNav>div>a, #mangaNav>div>i {
 		color: white;
 	}
 #mangaView {

@@ -25,6 +25,8 @@
 		};
 		xobj.send(null);
 	}
+	const isVerticalMode = () => document.getElementById('tagMain').classList.contains("vertical");
+
 // CORE //
 	// chapter selection page display
 	function displayDescription(e) {
@@ -54,24 +56,31 @@
 		setIndex();
 	}
 	function setIndex(index=undefined) { // display the page globals.
+		const mangaPages = document.getElementById('mangaPages');
+
 		if (typeof(index) == "number") {
 			globals.currentPage = index;
 		}
-		const pages = document.getElementById('mangaPages');
-		const thumbContainer = document.getElementById("mangaThumb");
-
-		// scroll to view
-		if (document.getElementById('tagMain').classList.contains("vertical")) {
-			const mangaView = document.getElementById("mangaView");
-			const image = document.querySelector(`#mangaPages>div[data-i='${globals.currentPage}']`);
-			const mangaStickyRect = document.getElementById("mangaSticky").getClientRects()[0];
-
-		    window.scrollTo(0, mangaView.offsetTop + image.offsetTop - mangaStickyRect.height);
-		} else { //horizontal
-			pages.style.transform = `translateX(${-100*globals.currentPage}%)`;
+		if (globals.currentPage >= mangaPages.children.length-1) {
+			return window.location.href = document.getElementById('linkNext').href;
 		}
 
+		// scroll to view
+		if (isVerticalMode()) {
+			const mangaView = document.getElementById("mangaView");
+			const currentPage = mangaPages.children[globals.currentPage];
+			const mangaStickyRect = document.getElementById("mangaSticky").getClientRects()[0];
+
+		    window.scrollTo(0, mangaView.offsetTop + currentPage.offsetTop - mangaStickyRect.height);
+			globals.notUserScroll = true;
+		} else {
+			mangaPages.style.transform = `translateX(${-100*globals.currentPage}%)`;
+		}
+		updateMangaSticky();
+	}
+	function updateMangaSticky(){
 		// update the thumb container style
+		const thumbContainer = document.getElementById("mangaThumb");
 		document.querySelector("#mangaThumb .active").classList.remove("active");
 		thumbContainer.children[globals.currentPage].classList.add("active");
 
@@ -80,6 +89,9 @@
 			thumbContainer.scrollTo(thumbContainer.children[globals.currentPage].offsetLeft - thumbContainer.offsetLeft - thumbContainer.getClientRects()[0].width*0.5 - 10, 0); // center the view of thumbnails
 		}
 		document.getElementById("pageSelect").value = globals.currentPage;
+
+		// replace url
+		window.history.replaceState({id: globals.currentPage}, globals.currentPage, `./#${globals.currentPage+1}`);
 	}
 	function toggle(id, button=-1) {
 	    document.getElementById(id).classList.toggle("hide");
@@ -163,42 +175,75 @@
 		document.getElementById("chapterSelect").innerHTML = inner;
 
 		/* Final init */
-		setIndex();
+		finalInit();
 	}
-	window.addEventListener("keydown", function(e) {
-		switch (e.code) {
-			case 'KeyA': window.location.href = document.getElementById('linkPrev').href; break;
-			case 'KeyD': window.location.href = document.getElementById('linkNext').href; break;
-			case 'ArrowLeft': return move(0);
-			case 'ArrowRight': return move(1);
-			default: break;
-		}
-	}, true);
-
-	//var debounce_timer;
-	window.onscroll = function(event) {
-		if (globals.pageType == "reader"){
-			const mangaSticky = document.getElementById("mangaSticky");
-			const mangaDescription = document.getElementById("mangaDescription");
-			const scrollbarTop = (globals.scrollbarTop) ? globals.scrollbarTop : mangaSticky.offsetTop;
-			if (window.scrollY > scrollbarTop) {
-				if (mangaSticky.style.position != "fixed"){
-					mangaSticky.style.position = "fixed";
-					mangaDescription.style.paddingTop = `${mangaSticky.getClientRects()[0].height}px`;
-					globals.scrollbarTop = scrollbarTop;
-				}
-			} else {
-				mangaDescription.style.paddingTop = "";
-				mangaSticky.style = "";
+	function finalInit() {
+		window.addEventListener("keydown", function(e) {
+			switch (e.code) {
+				case 'KeyA': window.location.href = document.getElementById('linkPrev').href; break;
+				case 'KeyD': window.location.href = document.getElementById('linkNext').href; break;
+				case 'ArrowLeft': return move(0);
+				case 'ArrowRight': return move(1);
+				default: break;
 			}
-		}
-		/*
-		Enable this if you want to
-		if (debounce_timer) {
-			window.clearTimeout(debounce_timer);
-		}
-		debounce_timer = window.setTimeout(function(){
-			console.log(window.scrollY);
-		}, 100);*/
+		}, true);
+
+		window.onscroll = function(event) {
+			// important code :
+			if (globals.pageType == "reader"){
+				const mangaSticky = document.getElementById("mangaSticky");
+				const mangaDescription = document.getElementById("mangaDescription");
+				const scrollbarTop = (globals.scrollbarTop) ? globals.scrollbarTop : mangaSticky.offsetTop;
+				if (window.scrollY > scrollbarTop) {
+					if (mangaSticky.style.position != "fixed"){
+						mangaSticky.style.position = "fixed";
+						mangaDescription.style.paddingTop = `${mangaSticky.getClientRects()[0].height}px`;
+						globals.scrollbarTop = scrollbarTop;
+					}
+				} else {
+					mangaDescription.style.paddingTop = "";
+					mangaSticky.style = "";
+				}
+			}
+
+			if (isVerticalMode()) {
+				// restricts the function calls over the time
+				// handmade scrollspy
+				const mangaPages = document.getElementById("mangaPages");
+				const mangaView = document.getElementById("mangaView");
+				const mangaStickyRect = document.getElementById("mangaSticky").getClientRects()[0];
+				let pageIndex = -1;
+				for (let i = mangaPages.children.length - 1; i >= 0 ; i--) {
+					if (window.scrollY + 10 >= mangaView.offsetTop + mangaPages.children[i].offsetTop - mangaStickyRect.height) {
+						pageIndex = i;
+						break;
+					}
+				}
+
+				if (pageIndex >= 0) {
+					globals.currentPage = pageIndex;
+					if (globals.notUserScroll){
+						if (globals.updateTimeout){
+							clearTimeout(globals.updateTimeout);
+						}
+						globals.updateTimeout = setTimeout(function(){
+							updateMangaSticky();
+							globals.notUserScroll = false;
+						}, 100);
+					} else {
+						updateMangaSticky();
+					}
+				}
+			}
+		};
+
+		window.onpopstate = function(){
+			const urlHashMatch = document.location.hash.match(/#(\d+)/);
+			if (urlHashMatch && urlHashMatch.length == 2) {
+				setIndex( parseInt(urlHashMatch[1]) -1 );
+			}
+		};
+
+		setIndex();
 	};
 	//window.onload = (event) => { Pace.stop(); };

@@ -10,7 +10,7 @@
 	<script>
 	var globals = {
 		pageType: "reader",
-		currentPage: 3,
+		currentPage: 0,
 		linksInner: "Liens"
 	};
 	</script>
@@ -33,9 +33,9 @@
 				<div class="col s3 m1"><a id="linkNext" href="../2/">
 					<i class='material-icons'>arrow_forward</i>
 				</a></div>
-				<div class="col s6 m1"><a onclick="toggle('mangaThumb',this)" href="#!">
-					<i class='material-icons'>view_carousel</i>
-				</a></div>
+				<div class="col s6 m1">
+					<i onclick="toggle('mangaThumb',this)" class='material-icons'>view_carousel</i>
+				</div>
 				<div class="col s6 m1"><a href="#!">
 					<i class='material-icons'>settings</i>
 				</a></div>

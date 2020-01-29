@@ -1,7 +1,7 @@
 {
-	"_comment": "Kagescan Kagerou Days Manga Database . Copyright (c) 2019 ShinProg. Under the license Creative Commons BY NC",
+	"_comment": "Kagescan Kagerou Days Manga Database . Copyright (c) 2019,2020 ShinProg. Under the license Creative Commons BY NC",
 	"title": "Scans en ligne : Kagerou Days",
-	"innerHTML": "",
+	"innerHTML": "Les chapitres 1 à 35 ont été créées par la team Kagerou Days Fr. Ils appartiennent désormais à Kagescan. Les chapitres 36 à 70 ont été créés par la team Kagerou Project Fr, désormais sous le nom de Kagescan. Seulement une partie des chapitres ont été checkés.",
 	"mangaName": "Kagerou Days",
 	"volumes": [
 		{
@@ -10,7 +10,7 @@
 			"coverArt": "/res/img/covers/1.jpg",
 			"summary": "<b>Shintaro Kisaragi est sur le point de passer une horrible journée...</b> Shintaro est un adolescent enfermé depuis deux ans devant son ordinateur avec pour seule compagine Ene, un étrange programme informatique qui n'arrête pas de l'embêter. Seulement, une de ses blagues tourne mal, forçant Shintaro à sortir de chez lui. Manque de pot, celui-ci est pris en otage par un groupe de terroriste ! Et dire que ce n'est que le début de sa journée...",
 			"chapters": [
-				{"id": "1", "name": "Jinzou Enemy",        "previewImg": "/scan/1/14.jpg", "summary": "Shintaro Kisaragi est un hikikomori, il est resté enfermé chez lui pendant 2 ans avec Ene, un mystérieux programme informatique.Un jour, à cause d'une blague d'Ene, Shintaro est contrait de sortir de chez lui. Mais sa journée banale est sur le point de tourner en enfer..." },
+				{"id": "1", "name": "Jinzou Enemy",        "previewImg": "/scan/1/14.jpg", "summary": "Shintaro Kisaragi est un hikikomori, il est resté enfermé chez lui pendant 2 ans avec Ene, un mystérieux programme informatique.\nUn jour, à cause d'une blague d'Ene, Shintaro est contraint de sortir de chez lui. Mais sa journée banale est sur le point de tourner en enfer..." },
 				{"id": "2", "name": "Jinzou Enemy II",     "previewImg": "/scan/2/1.jpg", "summary": "Une explosion retentit et Shintaro se retrouve pris en otage par un groupe terroriste. L'adolescent s'en sortira-il ?" },
 				{"id": "3", "name": "Kisaragi Attention",  "previewImg": "/scan/3/2.jpg", "summary": "Shintaro a perdu connaissance et se réveille chez le Mekakushi-Dan, un étrange groupe d'adolescents comprenant sa propre soeur. Elle lui explque comment elle a rejoint le groupe." },
 				{"id": "4", "name": "Mekakushi Code",      "previewImg": "/scan/4/1.jpg", "summary": "Un jour avant, Kido ramène Momo à la rencontre du MekakushiDan, qu'elle se décide finalement à rejoindre. Suite à une maladresse de Marry, le téléphone de Momo devient alors inutilisable. Le groupe se rends donc au centre commercial." },

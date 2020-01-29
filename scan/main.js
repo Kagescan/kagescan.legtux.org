@@ -1,6 +1,10 @@
 /*! Kagescan Manga Engine 2.0.0
  * @license MIT Copyright (C) 2017-2019 ShinProg / Kagescan */
 
+/*
+	Sorry if the code is a bit spaghetti... I will clean it in the next release !
+	some part of this code is not secure against XSS injections (especially window.history.href changes ! )
+*/
 
 // HELPERS //
 	var loadErrorCallback = function(error) { // display an alert message
@@ -39,30 +43,19 @@
 		setIndex( parseInt(me.parentNode.dataset.i) );
 	}
 	function move(dir=true) { // True : next slide, false : previous slide
-		const pages = document.getElementById('mangaPages');
-		if (dir) { // Next
-			if (globals.currentPage < pages.children.length-1) {
-				globals.currentPage++;
-			} else {
-				return window.location.href = document.getElementById('linkNext').href;
-			}
-		} else { // Previous
-			if (globals.currentPage > 0) {
-				 globals.currentPage--;
-			} else {
-				return window.location.href = document.getElementById('linkPrev').href;
-			}
-		}
+		globals.currentPage += (dir) ? 1: -1;
 		setIndex();
 	}
-	function setIndex(index=undefined) { // display the page globals.
+	function setIndex(index=undefined) {
 		const mangaPages = document.getElementById('mangaPages');
 
 		if (typeof(index) == "number") {
 			globals.currentPage = index;
 		}
-		if (globals.currentPage >= mangaPages.children.length-1) {
-			return window.location.href = document.getElementById('linkNext').href;
+		if (globals.currentPage >= mangaPages.children.length) {
+			return window.location.href = globals.linkNext;
+		} else if (globals.currentPage < 0){
+			return window.location.href = globals.linkPrev;
 		}
 
 		// scroll to view
@@ -125,12 +118,12 @@
 			/* VARS */
 			const mangaContainer = document.getElementById("mangaPages");
 			const thumbContainer = document.getElementById("mangaThumb");
+			const pageSelect = document.getElementById("pageSelect");
 			let inner = "";
 
 			/* PAGE GENERATION + EVENTS */
 			// add event for navigation clics
 			document.getElementById("mangaView").addEventListener("click", function(e) {
-				// TODO: adapt for the vertical navigation.
 				move((e.target.id=="prevClickTrigger")? 0:1);
 			});
 			// don't make the kagescan bar fixed.
@@ -143,8 +136,10 @@
 				inner += `<option value='${i}'>Page ${i+1}/${thumbContainer.children.length}</option>`;
 			}
 			thumbContainer.children[0].classList.add("active");
-			document.getElementById("pageSelect").innerHTML = inner;
-
+			pageSelect.innerHTML = inner;
+			pageSelect.addEventListener("change", function() {
+				setIndex(parseInt(pageSelect.value));
+			});
 			// page generation, second part
 			loadJSON("../manga.json", generatePage, loadErrorCallback);
 
@@ -156,7 +151,7 @@
 				padding: 0,
 				dist: -50,
 				onCycleTo: function(e) {
-					let target = document.getElementById(e.href.split("#")[1]);
+					const target = document.getElementById(e.href.split("#")[1]);
 					document.getElementById("chapterList_move").style.transform = `translateY(-${target.offsetTop}px)`;
 				}
 			});
@@ -165,30 +160,60 @@
 	});
 	function generatePage(db) {
 		/* Will generate the chapter pages*/
+		const chapterSelect = document.getElementById("chapterSelect");
 		let inner = "";
+		let chapIdBefore = "";
+		let obtainedChapterInfo = false;
+		globals.linkNext = "../"; // default value if the chapter is the last
+
 		db.volumes.forEach(function(vol) {
 			inner += `<option value='#' disabled>${vol.name}</option>`;
 			vol.chapters.forEach(function(infos, i) {
 				inner += `<option value='${infos.id}'>Chapitre ${infos.id} : ${infos.name}</option>`;
+				if (infos.id == globals.chapId){
+					globals.chapterInfos = infos;
+					globals.linkPrev = `../${chapIdBefore}`;
+					obtainedChapterInfo = true;
+				} else if (obtainedChapterInfo && globals.linkNext=="../"){
+					globals.linkNext = `../${infos.id}`;
+				}
+				chapIdBefore = infos.id;
 			});
 		});
-		document.getElementById("chapterSelect").innerHTML = inner;
+		chapterSelect.innerHTML = inner;
+		if (typeof(globals.chapterInfos) == "object") {
+			const mangaDescription = document.getElementById("mangaDescription");
+			const h1 = document.createElement("h1");
+			h1.textContent = `${db.mangaName} chapitre ${globals.chapterInfos.id} : ${globals.chapterInfos.name}`;
+			const p = document.createElement("p");
+			for (const text of globals.chapterInfos.summary.split("\n")) {
+				p.append(document.createTextNode(text), document.createElement("br"));
+			}
+			mangaDescription.append(h1, p);
+			chapterSelect.value = globals.chapterInfos.id;
+			document.getElementById("linkNext").href = globals.linkNext;
+			document.getElementById("linkPrev").href = globals.linkPrev;
+		} else {
+			return alert("Erreur critique !!\n" +
+			`Kagescan est incapable de charger les données du chapitre demandé (${globals.chapId})\n`+
+			"Si vous pensez que cette erreur ne devrait pas avoir lieu, merci de contacter l'administrateur du site.");
+		}
 
-		/* Final init */
-		finalInit();
-	}
-	function finalInit() {
+		chapterSelect.addEventListener("change", function() {
+			window.location.href = `../${chapterSelect.value}`;
+		});
+
 		window.addEventListener("keydown", function(e) {
 			switch (e.code) {
-				case 'KeyA': window.location.href = document.getElementById('linkPrev').href; break;
-				case 'KeyD': window.location.href = document.getElementById('linkNext').href; break;
+				case 'KeyA': window.location.href = globals.linkPrev; break;
+				case 'KeyD': window.location.href = globals.linkNext; break;
 				case 'ArrowLeft': return move(0);
 				case 'ArrowRight': return move(1);
 				default: break;
 			}
 		}, true);
 
-		window.onscroll = function(event) {
+		window.addEventListener("scroll", function(event) {
 			// important code :
 			if (globals.pageType == "reader"){
 				const mangaSticky = document.getElementById("mangaSticky");
@@ -235,15 +260,13 @@
 					}
 				}
 			}
-		};
-
-		window.onpopstate = function(){
+		});
+		window.onpopstate = function(){ //use the object setter instead of the addEventListener function to call it.
 			const urlHashMatch = document.location.hash.match(/#(\d+)/);
 			if (urlHashMatch && urlHashMatch.length == 2) {
 				setIndex( parseInt(urlHashMatch[1]) -1 );
 			}
 		};
-
-		setIndex();
+		window.onpopstate();
 	};
 	//window.onload = (event) => { Pace.stop(); };

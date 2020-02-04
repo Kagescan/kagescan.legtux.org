@@ -68,10 +68,19 @@
 
 document.addEventListener('DOMContentLoaded', function() {
 	// Materialize init
-	document.getElementById("scrollSpyLinks").innerHTML = globals.linksInner;
+	let linksInner = "";
+	for (var i = globals.linksInner.length-1; i >= 0; i--) {
+		if (i != 0) {
+			linksInner += `<li><a href="${"../".repeat(i)}">${globals.linksInner[i]}</a></li>`;
+			linksInner += "<li><i class='material-icons'>navigate_next</i></li>";
+		} else {
+			linksInner += `<li><a href="#1" class="active">${globals.linksInner[i]}</a></li>`;
+		}
+	}
+	document.getElementById("scrollSpyLinks").innerHTML = linksInner;
 	document.getElementById("navLinkManga").style.fontWeight = "bold";
 	document.getElementById("navLinkManga").classList.add("red-text","text-darken-4");
-	M.Sidenav.init( document.querySelectorAll('.sidenav') );
+	M.Sidenav.init( document.querySelector('.sidenav') );
 
 
 	if (globals.pageType == "reader") {
@@ -150,11 +159,15 @@ function initReader() {
 		if (globals.pageType == "reader"){
 			const mangaSticky = document.getElementById("mangaSticky");
 			const mangaDescription = document.getElementById("mangaDescription");
-			const scrollbarTop = (globals.scrollbarTop) ? globals.scrollbarTop : mangaSticky.offsetTop;
+			const scrollbarTop = document.getElementById("stickyNav").getClientRects()[0].height;
+
 			if (window.scrollY > scrollbarTop) {
 				if (mangaSticky.style.position != "fixed"){
 					mangaSticky.style.position = "fixed";
-					mangaDescription.style.paddingTop = `${mangaSticky.getClientRects()[0].height}px`;
+					if (mangaSticky.getClientRects()[0].height<200){
+						// the value of the client rects is sometimes wrong due to init.
+						mangaDescription.style.paddingTop = `${mangaSticky.getClientRects()[0].height}px`;
+					}
 					globals.scrollbarTop = scrollbarTop;
 				}
 			} else {

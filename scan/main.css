@@ -63,7 +63,23 @@ h3 {
 a {
 	color: #00b0ff;
 }
-#scrollSpyLinks .material-icons {transform: translate(15px,7px);}
+#scrollSpyLinks .material-icons {}
+#scrollSpyLinks>li>a {
+	color: black;
+}
+
+#scrollSpyLinks>li>a {
+	position: relative;
+}
+#scrollSpyLinks>li>a.active::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 7px;
+    bottom: 0;
+    left: 0;
+    background-color: #f00;
+}
 
 .page-footer{
 	background-color: #B71C1C !important;
@@ -170,8 +186,14 @@ main i.material-icons, #mangaSticky i.material-icons {
 	width: 100%;
 	z-index: 3;
 }
-#mangaDescription{
-
+#mangaDescription {
+	text-align: left;
+}
+#mangaDescription .summary{
+	color: white;
+	padding: 10px;
+	border-left: 5px solid red;
+	background-color: rgba(255,0,0,0.2);
 }
 #mangaNav {
 	margin-top: 20px;

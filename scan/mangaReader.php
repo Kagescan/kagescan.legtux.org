@@ -44,6 +44,7 @@ if ($dbFile){
 					$selectChapterElemContent .= "<option value='".$chapter["id"]."' ";
 					if ($chapter["id"] == $chapterId) {
 						$globals_chapterInfos = json_encode($chapter);
+						$chaptersInfosDecoded = $chapter;
 						$globals_linkPrev .= $chapBeforeValue;
 						$selectChapterElemContent .= "selected";
 					} else if ($globals_chapterInfos !== "" && $globals_linkNext === "../") {
@@ -76,8 +77,8 @@ if ($dbFile){
 		linkPrev: "<?php echo $globals_linkPrev; ?>",
 		chapterInfos: <?php echo $globals_chapterInfos; ?>,
 		pageType: "reader",
-		currentPage: 0,
-		linksInner: "Liens"
+		linksInner: <?php echo "['Chapitre $chapterId', '".$db["mangaName"]."', 'Mangas']" ?>,
+		currentPage: 0
 	};
 	</script>
 	<script src="/scan/main.js"></script>
@@ -87,33 +88,6 @@ if ($dbFile){
 
 <body class="grey darken-4">
 	<?php include("../res/private/header.html"); ?>
-	<div id="mangaSettings" class="hide">
-		<form action="?" method="post">
-			<div class="row">
-				<h2 class="center">Paramètres</h2>
-				<p><b>La modification des paramètres entrainera un rechargement de la page !</b><br>
-				Les paramètres sont sauvegardés sur votre ordinateur durant un mois, par le biais de cookies dont seul Kagescan et vous en détient l'accès.</p>
-
-				<em>- Pour avoir plus de contrôle dans votre navigation -</em>
-				<div class="switch">Mode Vertical : <label><input type="checkbox" name="verticalMode" value="1" <?php if ($_COOKIE["verticalMode"] != 0) echo "checked"; ?> > <span class="lever"></span></label></div><br>
-
-				<em>- Pour se concentrer sur la lecture -</em>
-				<div class="switch">Supprimer les animations : <label><input type="checkbox" name="noAnimations" value="1" <?php if ($_COOKIE["noAnimations"] != 0) echo "checked"; ?>> <span class="lever"></span></label></div><br>
-
-				<em>- Pour une lecture plus agréable sur un PC / grand écran (mode vertical uniquement) -</em>
-				<div class="switch">Activer une marge de 70% : <label><input type="checkbox" name="margin70" value="1" <?php if ($_COOKIE["margin70"] != 0) echo "checked"; ?>> <span class="lever"></span></label></div><br>
-
-				<em>- Pour une navigation plus confortable sur téléphone -</em>
-				Taille de la zone de clic pour la page arrière (mode horizontal uniquement)<br>
-				<input type="range" min="0" max="100" name="previousSize" value="<?php echo $_COOKIE["previousSize"]?>" style="margin: 0;">
-				<div class="row"><?php for ($i=1; $i <= 12; $i++) echo "<div class='col s1'>".($i*8)."%</div>";?></div>
-			</div>
-			<div class="row">
-				<input type="submit" class="btn red darken-4  " value="Sauvegarder" name="changeValue" />
-				<input type="button" class="btn red darken-4 right" value="Annuler" onclick="toggle('mangaSettings', document.getElementById('settingsButton'))">
-			</div>
-		</form>
-	</div>
 	<main id="tagMain"  class="<?php echo $mainTagClass; ?>">
 		<div id="mangaSticky" class="grey darken-4">
 			<div id="mangaNav" class="row container blue-grey darken-4">
@@ -147,9 +121,20 @@ if ($dbFile){
 		</div>
 		<div id="mangaContainer">
 			<div id="mangaDescription" class="grey-text text-lighten-2">
-				blblbl
+				<?php
+				echo "<h1 class='center'>". $db["mangaName"];
+				if ($chaptersInfosDecoded) {
+					echo " Chapitre ".$chaptersInfosDecoded["id"]." : ".$chaptersInfosDecoded["name"]. "</h1>";
+					echo "<p class='summary'>".str_replace("\n", "<br>", $chaptersInfosDecoded["summary"])."</p><br>";
+				} else {
+					echo "</h1>";
+				}
+				?>
 
-				<p>Merci de signaler tout problème (technique, ordre des pages, fautes d'orthographe) à notre équipe via discord !</p>
+				<p><a href="/discord/tchat.php" style="padding: 10px; border: 2px solid #888; border-radius: 3px; color: #888;">Merci de signaler tout problème (technique, ordre des pages, fautes d'orthographe) à notre équipe en cliquant ici!</a></p>
+				<br>
+				<hr>
+				<br>
 			</div>
 			<div id="mangaView">
 				<div id="prevClickTrigger" style="width: <?php echo $_COOKIE['previousSize']?>%"></div>
@@ -163,5 +148,34 @@ if ($dbFile){
 			</div>
 		</div>
 	</main>
+
+
+	<div id="mangaSettings" class="hide">
+		<form action="?" method="post">
+			<div class="row">
+				<h2 class="center">Paramètres</h2>
+				<p><b>La modification des paramètres entrainera un rechargement de la page !</b><br>
+				Les paramètres sont sauvegardés sur votre ordinateur durant un mois, par le biais de cookies dont seul Kagescan et vous en détient l'accès.</p>
+
+				<em>- Pour avoir plus de contrôle dans votre navigation -</em>
+				<div class="switch">Mode Vertical : <label><input type="checkbox" name="verticalMode" value="1" <?php if ($_COOKIE["verticalMode"] != 0) echo "checked"; ?> > <span class="lever"></span></label></div><br>
+
+				<em>- Pour se concentrer sur la lecture -</em>
+				<div class="switch">Supprimer les animations : <label><input type="checkbox" name="noAnimations" value="1" <?php if ($_COOKIE["noAnimations"] != 0) echo "checked"; ?>> <span class="lever"></span></label></div><br>
+
+				<em>- Pour une lecture plus agréable sur un PC / grand écran (mode vertical uniquement) -</em>
+				<div class="switch">Activer une marge de 70% : <label><input type="checkbox" name="margin70" value="1" <?php if ($_COOKIE["margin70"] != 0) echo "checked"; ?>> <span class="lever"></span></label></div><br>
+
+				<em>- Pour une navigation plus confortable sur téléphone -</em>
+				Taille de la zone de clic pour la page arrière (mode horizontal uniquement)<br>
+				<input type="range" min="0" max="100" name="previousSize" value="<?php echo $_COOKIE["previousSize"]?>" style="margin: 0;">
+				<div class="row"><?php for ($i=1; $i <= 12; $i++) echo "<div class='col s1'>".($i*8)."%</div>";?></div>
+			</div>
+			<div class="row">
+				<input type="submit" class="btn red darken-4  " value="Sauvegarder" name="changeValue" />
+				<input type="button" class="btn red darken-4 right" value="Annuler" onclick="toggle('mangaSettings', document.getElementById('settingsButton'))">
+			</div>
+		</form>
+	</div>
 </body>
 </html>

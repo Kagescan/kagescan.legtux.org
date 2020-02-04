@@ -74,7 +74,10 @@ main.animations #chapterList>div {transition: transform 0.5s;}
 main.animations i.material-icons {transition: color 0.5s;}
 main.animations #mangaThumb>div {transition: opacity 0.5s;}
 main.vertical #mangaPages {flex-direction: column;}
-
+main.margin70 #mangaContainer {
+	width: 70%;
+	margin: auto;
+}
 /*
 	MANGA SELECT
 */
@@ -261,29 +264,25 @@ main i.material-icons, #mangaSticky i.material-icons {
     background: rgba(0,0,0,0.5);
 	z-index: 4;
 }
-	#mangaSettings>div {
+	#mangaSettings>form {
 		background-color: #37474f;
 		color: #e0e0e0;
 		padding: 20px;
 		border: 1px solid #888;
 		width: 80%;
-		overflow-y:auto;
 		top: 50%;
 		left: 50%;
 		position: fixed;
 		transform: translate(-50%,-50%);
-		max-height: 80%;
 	}
-	#mangaSettings>div i {
-		float:right;
+	#mangaSettings>form>div:first-child {
+		overflow-y:auto;
+		max-height: 80vh;
 	}
-	#mangaSettings>div i:hover {
-		color: #D50000;
-	}
-	#mangaSettings>div input[type="range"]{
+	#mangaSettings input[type="range"]{
 		border:none;
 	}
-	#mangaSettings>div em {
+	#mangaSettings em {
 		font-size: small;
 		color: #9e9e9e;
 		display: block;

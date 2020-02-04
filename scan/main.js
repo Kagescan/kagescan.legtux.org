@@ -63,19 +63,6 @@
 	    document.getElementById(id).classList.toggle("hide");
 	    if (button!=-1) button.classList.toggle("selected");
 	}
-	function saveSettings() {
-	    const save = document.cookie;
-	    const verticalMode = document.getElementById("verticalMode").checked?1:0;
-	    const noAnimations = document.getElementById("noAnimations").checked?0:1;
-	    const previousSize = document.getElementById("previousSize").value;
-	    if (getCookie("manga_verticalMode") !== verticalMode) setCookie("manga_verticalMode",verticalMode, 100);
-	    if (getCookie("manga_noAnimations") !== noAnimations) setCookie("manga_noAnimations",noAnimations, 100);
-	    if (getCookie("manga_previousSize") !== previousSize) setCookie("manga_previousSize",previousSize, 100);
-	    if (save != document.cookie)
-	        document.location.reload(true);
-	    else
-	        toggle("mangaSettings", document.getElementById("toggleSettings"));
-	}
 
 // MAIN //
 

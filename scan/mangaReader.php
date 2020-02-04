@@ -6,6 +6,20 @@ $root = "/scan/";
 $manga = $_GET["manga"];
 $chapterId = $_GET["chapter"];
 
+
+if (!empty($_POST["changeValue"])){
+	$params = array("verticalMode", "noAnimations", "previousSize", "margin70");
+	foreach ($params as $i => $param) {
+		$_COOKIE[$param] = empty($_POST[$param]) ? 0:$_POST[$param];
+		setCookie($param, $_COOKIE[$param], time()+3600*24*30, $root);
+	}
+}
+
+$mainTagClass = "";
+$mainTagClass .= ($_COOKIE["noAnimations"] == 0) ? "animations " : "";
+$mainTagClass .= ($_COOKIE["verticalMode"] == 0) ? "" : "vertical ";
+$mainTagClass .= ($_COOKIE["margin70"] == 0) ? "" : "margin70";
+
 $pagesList = glob("$manga/$chapterId/*.{webp,png,jpg,jpeg}", GLOB_BRACE);
 $pageCount = count($pagesList);
 if ( $pageCount <= 0 || empty($chapterId)){
@@ -51,13 +65,13 @@ if ($dbFile){
 
 ?>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" <?php if ($_COOKIE["noAnimations"] != 0) echo "style='scroll-behavior: initial'";?> >
 <head>
 	<script src="/res/materialize.min.js"></script>
 	<script>
 	var globals = {
-		mangaId: <?php echo "'$manga'"; ?>,
-		chapId: <?php echo "'$chapterId'"; ?>,
+		mangaId: '<?php echo $manga; ?>',
+		chapId: '<?php echo $chapterId; ?>',
 		linkNext: "<?php echo $globals_linkNext; ?>",
 		linkPrev: "<?php echo $globals_linkPrev; ?>",
 		chapterInfos: <?php echo $globals_chapterInfos; ?>,
@@ -73,28 +87,34 @@ if ($dbFile){
 
 <body class="grey darken-4">
 	<?php include("../res/private/header.html"); ?>
-	<div id="mangaSettings" class="hide"><div>
-		<i class="material-icons" onclick="saveSettings()">close</i>
-		<h2 class="center">Paramètres</h2>
+	<div id="mangaSettings" class="hide">
+		<form action="?" method="post">
+			<div class="row">
+				<h2 class="center">Paramètres</h2>
+				<p><b>La modification des paramètres entrainera un rechargement de la page !</b><br>
+				Les paramètres sont sauvegardés sur votre ordinateur durant un mois, par le biais de cookies dont seul Kagescan et vous en détient l'accès.</p>
 
-		<em>- Pour avoir plus de contrôle dans votre navigation -</em>
-		<div class="switch">Mode Vertical : <label><input type="checkbox" id="verticalMode" value=""> <span class="lever"></span></label></div><br>
+				<em>- Pour avoir plus de contrôle dans votre navigation -</em>
+				<div class="switch">Mode Vertical : <label><input type="checkbox" name="verticalMode" value="1" <?php if ($_COOKIE["verticalMode"] != 0) echo "checked"; ?> > <span class="lever"></span></label></div><br>
 
-		<em>- Pour se concentrer sur la lecture -</em>
-		<div class="switch">Activer les animations : <label><input type="checkbox" id="noAnimations" value=""> <span class="lever"></span></label></div><br>
+				<em>- Pour se concentrer sur la lecture -</em>
+				<div class="switch">Supprimer les animations : <label><input type="checkbox" name="noAnimations" value="1" <?php if ($_COOKIE["noAnimations"] != 0) echo "checked"; ?>> <span class="lever"></span></label></div><br>
 
-		<em>- Pour une lecture plus agréable sur un PC / grand écran -</em>
-		<div class="switch">Activer une marge de 70% : <label><input type="checkbox" id="margin70" value=""> <span class="lever"></span></label></div><br>
+				<em>- Pour une lecture plus agréable sur un PC / grand écran (mode vertical uniquement) -</em>
+				<div class="switch">Activer une marge de 70% : <label><input type="checkbox" name="margin70" value="1" <?php if ($_COOKIE["margin70"] != 0) echo "checked"; ?>> <span class="lever"></span></label></div><br>
 
-		<em>- Pour une navigation plus confortable sur téléphone -</em>
-		Taille de la zone de clic pour la page arrière (mode horizontal uniquement)<br>
-		<p class="range-field"><input type="range" min="0" max="100" id="previousSize" value=""></p>
-
-		<p><b>La modification des paramètres entrainera un rechargement de la page !</b></p>
-		<button type="button" name="button" class="btn right">Enregistrer</button>
-		<br><br>
-	</div></div>
-	<main id="tagMain"  class="animations">
+				<em>- Pour une navigation plus confortable sur téléphone -</em>
+				Taille de la zone de clic pour la page arrière (mode horizontal uniquement)<br>
+				<input type="range" min="0" max="100" name="previousSize" value="<?php echo $_COOKIE["previousSize"]?>" style="margin: 0;">
+				<div class="row"><?php for ($i=1; $i <= 12; $i++) echo "<div class='col s1'>".($i*8)."%</div>";?></div>
+			</div>
+			<div class="row">
+				<input type="submit" class="btn red darken-4  " value="Sauvegarder" name="changeValue" />
+				<input type="button" class="btn red darken-4 right" value="Annuler" onclick="toggle('mangaSettings', document.getElementById('settingsButton'))">
+			</div>
+		</form>
+	</div>
+	<main id="tagMain"  class="<?php echo $mainTagClass; ?>">
 		<div id="mangaSticky" class="grey darken-4">
 			<div id="mangaNav" class="row container blue-grey darken-4">
 				<div class="col s3 m1"><a id="linkPrev" href="<?php echo $globals_linkPrev?>">
@@ -110,7 +130,7 @@ if ($dbFile){
 					<i onclick="toggle('mangaThumb', this)" class='material-icons'>view_carousel</i>
 				</div>
 				<div class="col s6 m1">
-					<i onclick="toggle('mangaSettings', this)" class='material-icons'>settings</i>
+					<i onclick="toggle('mangaSettings', this)" class='material-icons' id="settingsButton">settings</i>
 				</div>
 				<div class="col s3 m1">
 					<i onclick="move(false);" class='material-icons'>navigate_before</i>
@@ -127,10 +147,12 @@ if ($dbFile){
 		</div>
 		<div id="mangaContainer">
 			<div id="mangaDescription" class="grey-text text-lighten-2">
+				blblbl
 
+				<p>Merci de signaler tout problème (technique, ordre des pages, fautes d'orthographe) à notre équipe via discord !</p>
 			</div>
 			<div id="mangaView">
-				<div id="prevClickTrigger"></div>
+				<div id="prevClickTrigger" style="width: <?php echo $_COOKIE['previousSize']?>%"></div>
 				<div id="mangaPages">
 					<?php
 					foreach ($pagesList as $key => $filename) {

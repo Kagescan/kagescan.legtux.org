@@ -13,6 +13,42 @@ if ( $pageCount <= 0 || empty($chapterId)){
 }
 sort($pagesList, SORT_NATURAL);
 
+$dbFile = file_get_contents("$manga/manga.json");
+if ($dbFile){
+	$db = json_decode($dbFile, true);
+
+	$selectChapterElemContent = "";
+	$chapBeforeValue = "";
+	$globals_chapterInfos = "";
+	$globals_linkPrev = "../";
+	$globals_linkNext = "../";
+	foreach ($db['volumes'] as $i => $volume) {
+		if ($volume["name"] && $volume["chapters"]){
+			$selectChapterElemContent .= "<option value='#' disabled>". $volume["name"] ."</option>";
+			foreach ($volume["chapters"] as $j => $chapter) {
+				if ($chapter["id"] && $chapter["name"]){
+					$selectChapterElemContent .= "<option value='".$chapter["id"]."' ";
+					if ($chapter["id"] == $chapterId) {
+						$globals_chapterInfos = json_encode($chapter);
+						$globals_linkPrev .= $chapBeforeValue;
+						$selectChapterElemContent .= "selected";
+					} else if ($globals_chapterInfos !== "" && $globals_linkNext === "../") {
+						$globals_linkNext .= $chapter["id"];
+					}
+					$selectChapterElemContent .= ">Chapitre ".$chapter["id"]." : ".$chapter["name"]."</option>";
+					$chapBeforeValue = $chapter["id"];
+				} else {
+					die("Invalid database : volumes $i chapter $j -> [name] or [id] is undefined !");
+				}
+			}
+		} else {
+			die("Invalid database : volume $i -> [name] or [chapters] is undefined !");
+		}
+	}
+} else {
+	die("??? : the manga you are looking for seems to exist, but the manga engine couldn't read the datapable !");
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -22,9 +58,12 @@ sort($pagesList, SORT_NATURAL);
 	var globals = {
 		mangaId: <?php echo "'$manga'"; ?>,
 		chapId: <?php echo "'$chapterId'"; ?>,
+		linkNext: "<?php echo $globals_linkNext; ?>",
+		linkPrev: "<?php echo $globals_linkPrev; ?>",
+		chapterInfos: <?php echo $globals_chapterInfos; ?>,
 		pageType: "reader",
 		currentPage: 0,
-		linksInner: "Liens",
+		linksInner: "Liens"
 	};
 	</script>
 	<script src="/scan/main.js"></script>
@@ -55,16 +94,16 @@ sort($pagesList, SORT_NATURAL);
 		<button type="button" name="button" class="btn right">Enregistrer</button>
 		<br><br>
 	</div></div>
-	<main id="tagMain"  class="animations vertical">
+	<main id="tagMain"  class="animations">
 		<div id="mangaSticky" class="grey darken-4">
 			<div id="mangaNav" class="row container blue-grey darken-4">
-				<div class="col s3 m1"><a id="linkPrev" href="#1">
+				<div class="col s3 m1"><a id="linkPrev" href="<?php echo $globals_linkPrev?>">
 					<i class='material-icons'>arrow_back</i>
 				</a></div>
 				<div class="col s6 m3">
-					<select class="browser-default" id="chapterSelect"><option>Loading chapters...</option></select>
+					<select class="browser-default" id="chapterSelect" autocomplete="off"><?php echo $selectChapterElemContent; ?></select>
 				</div>
-				<div class="col s3 m1"><a id="linkNext" href="#<?php echo $pageCount;?>">
+				<div class="col s3 m1"><a id="linkNext" href="<?php echo $globals_linkNext?>">
 					<i class='material-icons'>arrow_forward</i>
 				</a></div>
 				<div class="col s6 m1">
@@ -77,7 +116,7 @@ sort($pagesList, SORT_NATURAL);
 					<i onclick="move(false);" class='material-icons'>navigate_before</i>
 				</div>
 				<div class="col s6 m3">
-					<select class="browser-default" id="pageSelect"><option>page</option></select>
+					<select class="browser-default" id="pageSelect"></select>
 				</div>
 				<div class="col s3 m1">
 					<i onclick="move();" class='material-icons'>navigate_next</i>

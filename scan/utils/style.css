@@ -5,21 +5,21 @@
 #list>a {
 	color: black;
 	background-color: #eceff1;
-	font-size: 1.7em;
+	font-size: 1.3em;
 	transition: all 0.3s;
 	position: relative;
 	overflow: hidden;
 }
 
 #list>a:hover {
-	font-size: 2em;
+	font-size: 1.5em;
 }
 #list>a:nth-child(2n) {
 	background-color: #cfd8dc;
 }
 #list>a.active, #list>a:nth-child(2n).active {
 	padding-left: 2em;
-	font-size: 2em;
+	font-size: 1.5em;
 	background-color: #a1887f;
 }
 #editContainer > div {

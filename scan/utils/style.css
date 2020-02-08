@@ -1,6 +1,7 @@
 #list {
 	border: 3px solid black;
 	border-radius: 3px;
+	margin-top: 20px;
 }
 #list>a {
 	color: black;
@@ -26,5 +27,13 @@
 	display: none;
 }
 #editContainer > div.active {
+	display: block;
+}
+#editContainer > div > textarea {
+	height: initial; /* due to materialize */
+}
+button.btn.right {
+	float: initial !important;
+	margin: auto 8px auto auto;
 	display: block;
 }

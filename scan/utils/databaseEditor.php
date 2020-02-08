@@ -12,35 +12,48 @@ $manga = "kagerou-days"; //TODO : add security
 		<link rel="stylesheet" href="style.css">
 		<link rel="stylesheet" href="/res/materialize.min.css">
  	</head>
- 	<body class="container">
-		<h1>Kagescan Database Editor</h1>
-		<p>Manga : <?php echo $manga ?></p>
-		<p>
-			<button type="button" name="goToMenu" onclick="app.applyDefaultDisplay()" class="btn">Go back (Volume Selection)</button>
+ 	<body class="">
+		<header class="container">
+			<h1>Kagescan Database Editor</h1>
 			<button type="button" class="btn right" name="save" disabled>Save</button>
-		</p>
-		<main id="app" style="margin-top: 20px;" class="row hide-on-small-only">
-			<div class="col m6">
+		</header>
+		<main id="app" style="margin: 20px;" class="row hide-on-small-only valign-wrapper">
+			<div class="col m4">
+				<button type="button" name="goToMenu" onclick="app.applyDefaultDisplay()" class="btn right">Go back (Volume Selection)</button>
 				<div class="row" id="list">
 				</div>
 			</div>
-			<div class="col m6" id="editContainer">
+			<div class="col m8" id="editContainer">
 				<div id="defaultEditorMsg" class="active">
+					<button type="button" name="addVolume" class="btn right" disabled>Add a volume (tba)</button>
 					<p>Click on the volume to select it and edit his informations.<br>
 					Click again to show and edit the chapters</p>
 				</div>
 				<div id="chapterEdit">
-					Chapter edit
+					<h3>Edit Chapter</h3>
+					<p> Chapter Name : <input type="text" name="name">
+					</p>
+					<p> Chapter ID : <input type="text" name="id">
+					</p>
+					<p> Preview page URL : <input type="text" name="previewImg">
+					</p>
+					<p> Chapter summary</p>
+					<textarea name="summary" rows="8" cols="80">
+					</textarea>
 				</div>
 				<div id="volumeEdit">
-					Volume Edit
-					<!--<h2 id="title"></h2>
-					<input type="text" name="name">
-					<input type="text" name="id">
-					<input type="text" name="coverArt">
+					<h3>Edit Volume</h3>
+					<button type="button" name="addChapter" class="btn" disabled>Add a chapter (tba)</button>
 
+					<p> Volume Name : <input type="text" name="name">
+					</p>
+					<p> Volume ID : <input type="text" name="id">
+					</p>
+					<p> Cover Art URL : <input type="text" name="coverArt">
+					</p>
+					<p> Volume summary</p>
 					<textarea name="summary" rows="8" cols="80">
-					</textarea>-->
+					</textarea>
 				</div>
 			</div>
 		</main>
@@ -82,7 +95,15 @@ $manga = "kagerou-days"; //TODO : add security
 			app.volumeEdit = document.getElementById("volumeEdit");
 			app.defaultEditorMsg = document.getElementById("defaultEditorMsg");
 
+			app.initElements();
 			app.applyDefaultDisplay();
+		},
+
+		initElements: function(){
+			const title = document.createElement("h3");
+			title.innerText = db.mangaName;
+			app.defaultEditorMsg.prepend(title);
+
 		},
 
 		// general
@@ -148,11 +169,27 @@ $manga = "kagerou-days"; //TODO : add security
 			exchangeActiveClass("#editContainer>div", app.defaultEditorMsg);
 		},
 		generateVolumeEditor: function( parentVolumeBtn ) {
-			document.querySelector("button[name='goToMenu']").style.display = "initial";
+			document.querySelector("button[name='goToMenu']").style.display = "block";
 			exchangeActiveClass("#editContainer>div", app.volumeEdit);
+			console.log(parentVolumeBtn.dataset);
+
+
 		},
 		generateChapterEditor: function( parentChapterBtn) {
 			exchangeActiveClass("#editContainer>div", app.chapterEdit);
+
+			const volumeIndex = parentChapterBtn.parentNode.firstChild.dataset.volumeIndex;
+			const chapterIndex = parentChapterBtn.dataset.chapterIndex;
+
+			const chapterInfo = (volumeIndex)? db.volumes[volumeIndex].chapters[chapterIndex] :null;
+			if (chapterInfo){
+				for (var key in chapterInfo) {
+					const input = document.querySelector(`#chapterEdit [name="${key}"]`);
+					if (input) {
+						input.value = chapterInfo[key];
+					}
+				}
+			}
 		}
 	}
 	document.addEventListener('DOMContentLoaded', function() {

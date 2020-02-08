@@ -84,6 +84,7 @@ if ($dbFile){
 	<script src="/scan/main.js"></script>
 	<link rel="stylesheet" href="/res/materialize.min.css">
 	<link rel="stylesheet" href="/scan/main.css"/>
+	<meta name="viewport" content="width=device-width">
 </head>
 
 <body class="grey darken-4">

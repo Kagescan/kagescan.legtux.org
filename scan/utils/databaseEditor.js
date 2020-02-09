@@ -27,6 +27,9 @@ var app = {
 		app.chapterEdit = document.getElementById("chapterEdit");
 		app.volumeEdit = document.getElementById("volumeEdit");
 		app.defaultEditorMsg = document.getElementById("defaultEditorMsg");
+		app.sendToServerPopup = document.getElementById("sendToServerPopup");
+		app.databaseDiff = document.getElementById("databaseDiff");
+		app.databaseRaw = document.getElementById("databaseRaw");
 
 		app.initElements();
 		app.applyDefaultDisplay();
@@ -41,7 +44,11 @@ var app = {
 
 	// general
 	applyDefaultDisplay: function() {
-		saveLocalValuesFromEditor();
+		if (app.elem.classList.contains("hide")) {
+			app.elem.classList.remove("hide");
+			app.sendToServerPopup.classList.add("hide");
+		}
+		app.saveLocalValuesFromEditor();
 		app.generateVolumeChoice();
 		app.displayDefaultEditorMsg();
 
@@ -164,7 +171,7 @@ var app = {
 	},
 	saveLocalValuesFromChapterEdit: function(){
 		const volumeIndex = app.list.firstChild.dataset.volumeIndex;
-		const chapterIndex = document.querySelector("#list .active");
+		const chapterIndex = document.querySelector("#list .active").dataset.chapterIndex;
 		const chapterInfo = (volumeIndex)? db.volumes[volumeIndex].chapters[chapterIndex] :null;
 		if (chapterInfo){
 			for (const key in chapterInfo) {
@@ -176,7 +183,19 @@ var app = {
 		}
 	},
 	showPopupThatSendLocalValuesToServer : function() {
-
+		app.saveLocalValuesFromEditor();
+		const localDbString = JSON.stringify(db);
+		app.databaseRaw.value = localDbString;
+		
+		if (app.sendToServerPopup.classList.contains("hide")) {
+			app.sendToServerPopup.classList.remove("hide");
+			app.elem.classList.add("hide");
+		}
+	},
+	
+	copyDatabaseRawTexatera : function() {
+		app.databaseRaw.select();
+		document.execCommand("copy");
 	}
 }
 document.addEventListener('DOMContentLoaded', function() {

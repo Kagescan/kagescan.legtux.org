@@ -7,8 +7,8 @@
 		<link rel="stylesheet" href="databaseEditor.css">
 		<link rel="stylesheet" href="../../res/materialize.min.css">
 
+		<script src="databaseEditor_noServer.js" charset="utf-8"></script>
 		<script src="databaseEditor.js" charset="utf-8"></script>
-		<script src="databaseEditor_NoServer.js" charset="utf-8"></script>
  	</head>
 
  	<body class="">
@@ -20,21 +20,25 @@
 		<form class="hide container" id="sendToServerPopup" action="?" method="POST" >
 			<h3>Send local changes to the server</h3>
 			<p>Please check your edits before sending : </p>
-			<ul id="databaseDiff">
+			<div class="row">
+				<ul class="col m6" id="databaseDiff">
+					<li>... ?</li>
+				</ul>
+				<div class="col m6" id="showSelectedDiff">
 
-			</ul>
-			
+				</div>
+			</div>
+			<p>Warning : You can't revert the sending operation. Make saves !</p>
 			<div class="row valign-wrapper">
-				<div class="col m4"><button class="btn" onclick="app.applyDefaultDisplay();">Go back</button></div>
-				<div class="col m4">
+				<div class="col m3"><button class="btn" onclick="app.applyDefaultDisplay();">Go back</button></div>
+				<div class="col m5">
 					<label for="pass">Server password:</label>
 					<input type="password" id="pass" name="password" required>
 				</div>
 				<div class="col m4 right-align"><input type="submit" name="saveDatabase" class="btn red" value="Send the local database to the server"></div>
 			</div>
-			
-			<p>Or you can copy/paste your changes to the real file : </p>
-			<p>Raw database : (<a href="#!" onclick="app.copyDatabaseRawTexatera()">Click here to copy</a>)</p>
+
+			<p>Or you can copy/paste your changes to the real file : (<a href="#!" onclick="app.copyDatabaseRawTexatera()">Click here to copy</a>)</p>
 			<textarea id="databaseRaw" name="database">
 			</textarea>
 		</form>

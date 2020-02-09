@@ -1,4 +1,4 @@
-var db = {
+const db = {
 	"_comment": "Kagescan Kagerou Days Manga Database . Copyright (c) 2019,2020 ShinProg. Under the license Creative Commons BY NC",
 	"title": "Scans en ligne : Kagerou Days",
 	"innerHTML": "Les chapitres 1 à 35 ont été créées par la team Kagerou Days Fr. Ils appartiennent désormais à Kagescan. Les chapitres 36 à 70 ont été créés par la team Kagerou Project Fr, désormais sous le nom de Kagescan. Seulement une partie des chapitres ont été checkés.",

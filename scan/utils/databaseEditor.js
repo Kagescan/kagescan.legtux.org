@@ -16,6 +16,27 @@ function cleanButIgnore( parent, toIgnore ){
 	}
 }
 
+function createDiffBetween2Objects(old, now, retval) {
+	// TODO: Support delete type
+	if (old != now) {
+		for (const i in now) {
+			if (old[i]) {
+				if (old[i] != now[i]){
+					if (typeof(old[i]) == "object") {
+						const eval = createDiffBetween2Objects(old[i], now[i], []);
+						retval.push( {type: "node", index: i, content: eval});
+					} else {
+						retval.push({ type: "edit", index: i, content: [old[i], now[i] ] });
+					}
+				}
+			} else {
+				retval.push( {type: "new", index: i, content: now[i]} );
+			}
+		}
+	}
+	return retval;
+}
+
 // main
 var app = {
 
@@ -40,14 +61,17 @@ var app = {
 		title.innerText = db.mangaName;
 		app.defaultEditorMsg.prepend(title);
 
+		// freaking dirty but might be the best solution...
+		app.databaseBeforeEdit = JSON.parse( JSON.stringify(db) );
 	},
 
 	// general
-	applyDefaultDisplay: function() {
+	applyDefaultDisplay: function(isInit) {
 		if (app.elem.classList.contains("hide")) {
 			app.elem.classList.remove("hide");
 			app.sendToServerPopup.classList.add("hide");
 		}
+
 		app.saveLocalValuesFromEditor();
 		app.generateVolumeChoice();
 		app.displayDefaultEditorMsg();
@@ -146,38 +170,28 @@ var app = {
 	// Save functions
 	saveLocalValuesFromEditor: function() {
 		const currentActiveEditor = document.querySelector("#editContainer>div.active");
-		switch (currentActiveEditor.id) {
+		const activeListElement = document.querySelector("#list .active");
+		if (activeListElement) {
+			const activeDataset = activeListElement.dataset;
+			let arrayToRead;
+
+			switch (currentActiveEditor.id) {
 			case "volumeEdit":
-				app.saveLocalValuesFromVolumeEdit();
+				arrayToRead = db.volumes[ activeDataset.volumeIndex ];
 				break;
 			case "chapterEdit":
-				app.saveLocalValuesFromChapterEdit();
+				const volumeIndex = app.list.firstChild.dataset.volumeIndex;
+				const chapterIndex = activeDataset.chapterIndex;
+				arrayToRead = db.volumes[volumeIndex].chapters[chapterIndex];
 				break;
-			default:
-				break;
-		}
-	},
-	saveLocalValuesFromVolumeEdit: function(){
-		const selectedVolumeBtn = document.querySelector("#list .active");
-		const volumeInfo = db.volumes[ selectedVolumeBtn.dataset.volumeIndex ];
-		if (volumeInfo) {
-			for (const key in volumeInfo) {
-				const input = document.querySelector(`#volumeEdit [name="${key}"]`);
-				if (input) {
-					volumeInfo[key] = input.value;
-				}
 			}
-		}
-	},
-	saveLocalValuesFromChapterEdit: function(){
-		const volumeIndex = app.list.firstChild.dataset.volumeIndex;
-		const chapterIndex = document.querySelector("#list .active").dataset.chapterIndex;
-		const chapterInfo = (volumeIndex)? db.volumes[volumeIndex].chapters[chapterIndex] :null;
-		if (chapterInfo){
-			for (const key in chapterInfo) {
-				const input = document.querySelector(`#chapterEdit [name="${key}"]`);
-				if (input) {
-					chapterInfo[key] = input.value;
+
+			if (arrayToRead) {
+				for (const key in arrayToRead) {
+					const input = document.querySelector(`#${currentActiveEditor.id} [name="${key}"]`);
+					if (input) {
+						arrayToRead[key] = input.value;
+					}
 				}
 			}
 		}
@@ -186,13 +200,14 @@ var app = {
 		app.saveLocalValuesFromEditor();
 		const localDbString = JSON.stringify(db);
 		app.databaseRaw.value = localDbString;
-		
+
 		if (app.sendToServerPopup.classList.contains("hide")) {
 			app.sendToServerPopup.classList.remove("hide");
 			app.elem.classList.add("hide");
 		}
 	},
-	
+	displayDatabaseDiff: function(){
+	},
 	copyDatabaseRawTexatera : function() {
 		app.databaseRaw.select();
 		document.execCommand("copy");

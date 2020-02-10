@@ -16,27 +16,6 @@ function cleanButIgnore( parent, toIgnore ){
 	}
 }
 
-function createDiffBetween2Objects(old, now, retval) {
-	// TODO: Support delete type
-	if (old != now) {
-		for (const i in now) {
-			if (old[i]) {
-				if (old[i] != now[i]){
-					if (typeof(old[i]) == "object") {
-						const eval = createDiffBetween2Objects(old[i], now[i], []);
-						retval.push( {type: "node", index: i, content: eval});
-					} else {
-						retval.push({ type: "edit", index: i, content: [old[i], now[i] ] });
-					}
-				}
-			} else {
-				retval.push( {type: "new", index: i, content: now[i]} );
-			}
-		}
-	}
-	return retval;
-}
-
 // main
 var app = {
 
@@ -49,7 +28,7 @@ var app = {
 		app.volumeEdit = document.getElementById("volumeEdit");
 		app.defaultEditorMsg = document.getElementById("defaultEditorMsg");
 		app.sendToServerPopup = document.getElementById("sendToServerPopup");
-		app.databaseDiff = document.getElementById("databaseDiff");
+		app.databaseDiffContainer = document.getElementById("databaseDiffContainer");
 		app.databaseRaw = document.getElementById("databaseRaw");
 
 		app.initElements();
@@ -200,17 +179,115 @@ var app = {
 		app.saveLocalValuesFromEditor();
 		const localDbString = JSON.stringify(db);
 		app.databaseRaw.value = localDbString;
+		app.displayDatabaseDiff();
 
 		if (app.sendToServerPopup.classList.contains("hide")) {
 			app.sendToServerPopup.classList.remove("hide");
 			app.elem.classList.add("hide");
 		}
 	},
-	displayDatabaseDiff: function(){
-	},
 	copyDatabaseRawTexatera : function() {
 		app.databaseRaw.select();
 		document.execCommand("copy");
+	},
+
+	// diff functions
+	displayDatabaseDiff: function(){
+		// reset
+		app.databaseDiffContainer.innerHTML = "";
+		const changes = app.createDiffBetween2Objects( app.databaseBeforeEdit.volumes, db.volumes);
+		const   infos = document.createElement("div");
+		changes.id = "databaseDiff";
+		  infos.id = "showSelectedDiff";
+		changes.classList.add("col", "m6");
+		  infos.classList.add("col", "m6", "grey", "lighten-3");
+		app.databaseDiffContainer.append( changes, infos );
+
+		// stuff
+		const allVolumeElems = document.querySelectorAll("#databaseDiff>li > ul");
+		for (const volElem of allVolumeElems) {
+
+			const volumeTitle = document.createElement("b");
+			const volumeInfos = db.volumes[volElem.dataset.index];
+			volumeTitle.innerText = volumeInfos.id;
+			volElem.before(volumeTitle);
+
+			const allChapElems = volElem.querySelectorAll(`[data-index="chapters"] ul`);
+			if (allChapElems) {
+				for (chapElem of allChapElems) {
+					const chapTitle = document.createElement("b");
+					chapTitle.innerText = volumeInfos.chapters[ chapElem.dataset.index ].name;
+					chapElem.before(chapTitle);
+				}
+			}
+		}
+	},
+	showLongChange: function(now, old) {
+		const target = document.getElementById("showSelectedDiff");
+		target.innerHTML = "";
+		if (old) {
+			old = old.replace("\n", "<br>");
+			target.innerHTML = `
+				<h3>Original Value</h3>
+				<em class="red-text">${old}</em>
+			`;
+		}
+		if (now) {
+			// BUG: Don't work for multiple \n
+			now = now.replace("\n", "<br>");
+		}
+		target.innerHTML += `
+			<h3>New Value</h3>
+			<em class="green-text">${(now) ? now : "[deleted]"}</em>
+		`;
+	},
+	createDiffBetween2Objects: function(old, now) {
+		const retval = document.createElement("ul");
+		retval.classList.add("browser-default");
+		// TODO: Support delete type
+
+		for (const i in now) {
+			const li = document.createElement("li");
+			if (old[i]) {
+				li.classList.add("orange-text");
+				if (typeof(old[i]) == "object") {
+					const eval = app.createDiffBetween2Objects(old[i], now[i]);
+					if (eval.childNodes.length > 0){
+						eval.dataset.index = i;
+						li.append (eval);
+					}
+				} else if (old[i] != now[i]) {
+					li.innerText = i;
+					if (now[i].length + old[i].length > 50) {
+						li.innerHTML += " <i class='material-icons'>info</i>";
+						li.addEventListener("mouseover", function(){
+							exchangeActiveClass("#databaseDiff ", li);
+							app.showLongChange(now[i], old[i]);
+						});
+					} else {
+						li.innerHTML += ` :
+							<span class="red-text">  ${old[i]}</span> ->
+							<span class="green-text">${now[i]}</span>`;
+					}
+				}
+			} else if (now[i]) { // Old[i] empty and now[i] not empty
+				li.classList.add("green-text");
+				li.innerText = i;
+				if (now[i].length > 50) {
+					li.innerHTML += " <i class='material-icons'>info</i>";
+					li.addEventListener("mouseover", function(){
+						exchangeActiveClass("#databaseDiff ", li);
+						app.showLongChange(now[i]);
+					});
+				} else {
+					li.innerText += ` : ${now[i]}`;
+				}
+			}
+			if (li.childNodes.length > 0) {
+				retval.append(li);
+			}
+		}
+		return retval;
 	}
 }
 document.addEventListener('DOMContentLoaded', function() {

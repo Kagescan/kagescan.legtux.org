@@ -14,13 +14,12 @@
  	<body class="">
 		<header class="container">
 			<h1>Kagescan Database Editor</h1>
-			<p>Local changes autosave status: <span id="autoSaveStatus">Not modified</span></p>
 			<button type="button" class="btn right" name="save" onclick="app.showPopupThatSendLocalValuesToServer()">Save local changes to the real database</button>
 		</header>
 		<form class="hide container" id="sendToServerPopup" action="?" method="POST" >
 			<h3>Send local changes to the server</h3>
 			<p>Please check your edits before sending : </p>
-			<div class="row">
+			<div class="row" id="databaseDiffContainer">
 				<ul class="col m6" id="databaseDiff">
 					<li>... ?</li>
 				</ul>

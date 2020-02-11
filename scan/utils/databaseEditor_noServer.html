@@ -49,13 +49,12 @@
 			</div>
 			<div class="col m8" id="editContainer">
 				<div id="defaultEditorMsg" class="active">
-					<button type="button" name="addVolume" class="btn right" disabled>Add a volume (tba)</button>
 					<p>Click on the volume to select it and edit his informations.<br>
 					Click again to show and edit the chapters</p>
 				</div>
 				<div id="chapterEdit">
 					<h3>Edit Chapter</h3>
-					<p> Chapter Name : <input type="text" name="name">
+					<p> Chapter Name : <input type="text" name="name" oninput="document.querySelector('#list a.active').innerText = this.value;">
 					</p>
 					<p> Chapter ID : <input type="text" name="id">
 					</p>
@@ -67,9 +66,8 @@
 				</div>
 				<div id="volumeEdit">
 					<h3>Edit Volume</h3>
-					<button type="button" name="addChapter" class="btn" disabled>Add a chapter (tba)</button>
 
-					<p> Volume Name : <input type="text" name="name">
+					<p> Volume Name : <input type="text" name="name" oninput="document.querySelector('#list a.active').innerText = this.value;">
 					</p>
 					<p> Volume ID : <input type="text" name="id">
 					</p>

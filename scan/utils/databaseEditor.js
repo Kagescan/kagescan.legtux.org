@@ -135,7 +135,7 @@ var app = {
 		if (typeof(volumeInfo) !== "object") {
 			volumeInfo = {
 				"name": "Untitled Volume",
-				"id": `vol${parentVolumeBtn.dataset.volumeIndex}`,
+				"id": `vol${db.volumes.length + 1}`,
 				"coverArt": "# URL to the cover image #",
 				"summary": "The summary for the new volume",
 				"chapters": []

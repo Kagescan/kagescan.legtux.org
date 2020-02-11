@@ -30,6 +30,7 @@ var app = {
 		app.sendToServerPopup = document.getElementById("sendToServerPopup");
 		app.databaseDiffContainer = document.getElementById("databaseDiffContainer");
 		app.databaseRaw = document.getElementById("databaseRaw");
+		app.saveBtn = document.getElementById("saveBtn");
 
 		app.initElements();
 		app.applyDefaultDisplay();
@@ -49,6 +50,7 @@ var app = {
 		if (app.elem.classList.contains("hide")) {
 			app.elem.classList.remove("hide");
 			app.sendToServerPopup.classList.add("hide");
+			app.saveBtn.classList.remove("hide");
 		}
 
 		app.saveLocalValuesFromEditor();
@@ -63,8 +65,8 @@ var app = {
 		app.saveLocalValuesFromEditor();
 		if (! this.classList.contains("active")){
 			this.classList.add("active");
-			app.generateChapterChoice(this);
 			app.generateVolumeEditor(this);
+			app.generateChapterChoice(this);
 		}
 	},
 	chapterBtnOnClick: function() {
@@ -72,6 +74,9 @@ var app = {
 		if (! this.classList.contains("active")){
 			exchangeActiveClass("#list a", this);
 			app.generateChapterEditor(this);
+			if (this.innerText == "Create Chapter") {
+				app.generateChapterChoice(this);
+			}
 		}
 	},
 
@@ -79,27 +84,34 @@ var app = {
 	generateVolumeChoice: function() {
 		app.list.innerHTML = "";
 
-		for (const i in db.volumes) {
+		for (var i = 0; i <= db.volumes.length; i++) {
 			app.addChoiceBtn( (btn) => {
-				btn.innerText = db.volumes[i].name;
-				btn.href = `#${i}`;
+				btn.innerText = (i == db.volumes.length)? "Create Volume": db.volumes[i].name;
 				btn.onclick = app.volumeBtnOnClick;
+				btn.href = `#${i}`;
 				btn.dataset.volumeIndex = i;
 			} );
 		}
 	},
 	generateChapterChoice: function( parentVolumeBtn ) {
-		cleanButIgnore( app.list, parentVolumeBtn );
+		if (parentVolumeBtn.dataset.volumeIndex) {
+			cleanButIgnore( app.list, parentVolumeBtn );
+		} else {
+			cleanButIgnore( app.list, app.list.firstChild);
+		}
 
-		const volumeIndex = parentVolumeBtn.dataset.volumeIndex;
+		const volumeIndex = app.list.firstChild.dataset.volumeIndex;
 		const chapterList = db.volumes[ volumeIndex ].chapters;
-		for (const i in chapterList) {
+		for (var i = 0; i <= chapterList.length; i++) {
 			app.addChoiceBtn( (btn) => {
-				btn.innerText = chapterList[i].name;
-				btn.href = `#${i}`;
+				btn.innerText = (i == chapterList.length)? "Create Chapter": chapterList[i].name;
 				btn.onclick = app.chapterBtnOnClick;
+				btn.href = `#${i}`;
 				btn.dataset.chapterIndex = i;
 			} );
+		}
+		if (! document.querySelector("#list a.active")) {
+			document.querySelector(`#list a[href="#${chapterList.length - 1}"]`).classList.add("active");
 		}
 	},
 	addChoiceBtn: function(callback) {
@@ -119,29 +131,49 @@ var app = {
 		document.querySelector("button[name='goToMenu']").style.display = "block";
 		exchangeActiveClass("#editContainer>div", app.volumeEdit);
 
-		const volumeInfo = db.volumes[ parentVolumeBtn.dataset.volumeIndex ];
-		if (volumeInfo) {
-			for (const key in volumeInfo) {
-				const input = document.querySelector(`#volumeEdit [name="${key}"]`);
-				if (input) {
-					input.value = volumeInfo[key];
-				}
-			}
+		let volumeInfo = db.volumes[ parentVolumeBtn.dataset.volumeIndex ];
+		if (typeof(volumeInfo) !== "object") {
+			volumeInfo = {
+				"name": "Untitled Volume",
+				"id": `vol${parentVolumeBtn.dataset.volumeIndex}`,
+				"coverArt": "# URL to the cover image #",
+				"summary": "The summary for the new volume",
+				"chapters": []
+			};
+			db.volumes.push(volumeInfo);
 		}
 
+		for (const key in volumeInfo) {
+			const input = document.querySelector(`#volumeEdit [name="${key}"]`);
+			if (input) {
+				input.value = volumeInfo[key];
+			}
+		}
 	},
-	generateChapterEditor: function( parentChapterBtn) {
+	generateChapterEditor: function( parentChapterBtn ) {
 		exchangeActiveClass("#editContainer>div", app.chapterEdit);
 
 		const volumeIndex = parentChapterBtn.parentNode.firstChild.dataset.volumeIndex;
+		if (typeof(db.volumes[volumeIndex]) !== "object") {
+			throw `Cannot access to the volume [index = ${volumeIndex}] from the local database !`;
+		}
 		const chapterIndex = parentChapterBtn.dataset.chapterIndex;
-		const chapterInfo = (volumeIndex)? db.volumes[volumeIndex].chapters[chapterIndex] :null;
-		if (chapterInfo){
-			for (const key in chapterInfo) {
-				const input = document.querySelector(`#chapterEdit [name="${key}"]`);
-				if (input) {
-					input.value = chapterInfo[key];
-				}
+		let chapterInfo = db.volumes[volumeIndex].chapters[chapterIndex];
+		if (typeof(chapterInfo) !== "object") {
+			chapterInfo = {
+				"name": "Untitled Chapter",
+				"id": "The folder name that points to the chapter's pages",
+				"previewImg": "# URL to the preview image #",
+				"summary": "The summary for the new chapter"
+			};
+
+			db.volumes[volumeIndex].chapters.push(chapterInfo);
+		}
+
+		for (const key in chapterInfo) {
+			const input = document.querySelector(`#chapterEdit [name="${key}"]`);
+			if (input) {
+				input.value = chapterInfo[key];
 			}
 		}
 	},
@@ -177,13 +209,13 @@ var app = {
 	},
 	showPopupThatSendLocalValuesToServer : function() {
 		app.saveLocalValuesFromEditor();
-		const localDbString = JSON.stringify(db);
-		app.databaseRaw.value = localDbString;
+		app.databaseRaw.value = JSON.stringify(db);
 		app.displayDatabaseDiff();
 
 		if (app.sendToServerPopup.classList.contains("hide")) {
 			app.sendToServerPopup.classList.remove("hide");
 			app.elem.classList.add("hide");
+			app.saveBtn.classList.add("hide");
 		}
 	},
 	copyDatabaseRawTexatera : function() {
@@ -191,7 +223,7 @@ var app = {
 		document.execCommand("copy");
 	},
 
-	// diff functions
+	// diff functions (might hurt your eyes)
 	displayDatabaseDiff: function(){
 		// reset
 		app.databaseDiffContainer.innerHTML = "";
@@ -222,23 +254,18 @@ var app = {
 			}
 		}
 	},
-	showLongChange: function(now, old) {
+	showLongChange: function(newValue, oldValue) {
 		const target = document.getElementById("showSelectedDiff");
 		target.innerHTML = "";
-		if (old) {
-			old = old.replace("\n", "<br>");
+		if (oldValue) {
 			target.innerHTML = `
 				<h3>Original Value</h3>
-				<em class="red-text">${old}</em>
+				<em class="red-text">${oldValue.replace(/\n/g, "<br>")}</em>
 			`;
-		}
-		if (now) {
-			// BUG: Don't work for multiple \n
-			now = now.replace("\n", "<br>");
 		}
 		target.innerHTML += `
 			<h3>New Value</h3>
-			<em class="green-text">${(now) ? now : "[deleted]"}</em>
+			<em class="green-text">${(newValue) ? newValue.replace(/\n/g, "<br>") : "[deleted]"}</em>
 		`;
 	},
 	createDiffBetween2Objects: function(old, now) {
@@ -270,17 +297,25 @@ var app = {
 							<span class="green-text">${now[i]}</span>`;
 					}
 				}
-			} else if (now[i]) { // Old[i] empty and now[i] not empty
+			} else if (now[i]) { // Old[i] empty and now[i] not empty -> value created
 				li.classList.add("green-text");
-				li.innerText = i;
-				if (now[i].length > 50) {
-					li.innerHTML += " <i class='material-icons'>info</i>";
-					li.addEventListener("mouseover", function(){
-						exchangeActiveClass("#databaseDiff ", li);
-						app.showLongChange(now[i]);
-					});
+				if (typeof(now[i]) == "object") {
+					const eval = app.createDiffBetween2Objects({}, now[i]);
+					if (eval.childNodes.length > 0){
+						eval.dataset.index = i;
+						li.append (eval);
+					}
 				} else {
-					li.innerText += ` : ${now[i]}`;
+					li.innerText = i;
+					if (now[i].length > 50) {
+						li.innerHTML += " <i class='material-icons'>info</i>";
+						li.addEventListener("mouseover", function(){
+							exchangeActiveClass("#databaseDiff ", li);
+							app.showLongChange(now[i]);
+						});
+					} else {
+						li.innerText += ` : ${now[i]}`;
+					}
 				}
 			}
 			if (li.childNodes.length > 0) {

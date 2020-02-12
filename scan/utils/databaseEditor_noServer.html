@@ -43,7 +43,10 @@
 		</form>
 		<main id="app" style="margin: 20px;" class="row hide-on-small-only valign-wrapper">
 			<div class="col m4">
-				<button type="button" name="goToMenu" onclick="app.applyDefaultDisplay()" class="btn right">Go back (Volume Selection)</button>
+				<div class="row" id="listControlBtns">
+					<button class="col s12 btn" name="removeActive" onclick="app.removeActive()" >Delete the selected entry</button>
+					<button class="col s12 btn" name="goToMenu" onclick="app.applyDefaultDisplay()">Go back (Volume Selection)</button>
+				</div>
 				<div class="row" id="list">
 				</div>
 			</div>

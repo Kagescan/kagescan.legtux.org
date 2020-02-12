@@ -40,6 +40,9 @@
 #list>a.active:empty:after, #list>a.active:empty:before {
 	color: white;
 }
+#listControlBtns>button {
+	margin-bottom: 15px;
+}
 
 #editContainer > div {
 	display: none;

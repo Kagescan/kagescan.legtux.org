@@ -24,17 +24,19 @@ function getActivePositionFromHisParent(parent) {
 	}
 }
 
-function prettyPrintDb(obj) {
-	let retval = "";
-	for (const vol of obj.volumes) {
-		retval += `(${vol.id}) ${vol.name} : \n\t- Preview Image : ${vol.coverArt}\n\t- Summary : >>${vol.summary.replace(/\n/g, ">>")}\n`;
-		for (const chap  of vol.chapters) {
-			retval += `\t(${chap.id}) ${chap.name} : \n\t\t- Preview Image : ${chap.previewImg}\n\t\t- Summary : >>${chap.summary.replace(/\n/g, ">>")}\n`;
+function removeEntriesThatContainsDefinedId( obj ){
+	// Don't work well at the moment
+	const deleteSelector = "deleted";
+	for (const i in obj) {
+		if (typeof(obj[i]) == "object") {
+			if (obj[i].id == deleteSelector) {
+				obj.splice(i, 1);
+			} else {
+				obj[i] = removeEntriesThatContainsDefinedId( obj[i] );
+			}
 		}
-		retval += `\n\n`;
 	}
-	// testing only
-	app.databaseRaw.value = retval;
+	return obj;
 }
 
 // main
@@ -116,18 +118,28 @@ var app = {
 		}
 
 		if (targetElem.dataset.chapterIndex) {
+			// TODO : beautify code
 			const volumeIndex = app.list.firstChild.dataset.volumeIndex;
 			const chapterIndex = targetElem.dataset.chapterIndex;
 			if (! db.volumes[volumeIndex]) {
 				throw `Error : db.volumes[${volumeIndex}] is undefined`;
 			}
 			const chapterList = db.volumes[volumeIndex].chapters;
-			chapterList.splice(chapterIndex, 1);
-			let toUnderline = document.querySelector(`#list a[href="#${chapterList.length - 1}"][data-chapter-index]`);
+			const chapterListBefore = app.databaseBeforeEdit.volumes[volumeIndex].chapters;
+			if (chapterListBefore[chapterIndex]) {
+				chapterList[chapterIndex] = { id: "deleted", name: chapterList[chapterIndex].name };
+			} else {
+				chapterList.splice(chapterIndex, 1);
+			}
+			let nextActiveIndex = app.list.childNodes.length -2;
+			if (nextActiveIndex == activeIndex) {
+				nextActiveIndex--;
+			}
+			let toUnderline = app.list.childNodes[ nextActiveIndex ];
 
-			if (toUnderline) {
-				app.generateChapterEditor(toUnderline);
+			if (toUnderline.dataset.chapterIndex) {
 				app.generateChapterChoice(toUnderline);
+				app.generateChapterEditor( document.querySelector("#list a.active") );
 			} else {
 				isVolume = true;
 				targetElem = app.list.firstChild;
@@ -135,7 +147,13 @@ var app = {
 		}
 		if (isVolume) {
 			const volumeIndex = targetElem.dataset.volumeIndex;
-			db.volumes.splice(volumeIndex, 1);
+			
+			if ( app.databaseBeforeEdit.volumes[volumeIndex] ) {
+				db.volumes[volumeIndex] = { id: "deleted", name: db.volumes[volumeIndex].name };
+			} else {
+				db.volumes.splice(volumeIndex, 1);
+			}
+			
 			app.applyDefaultDisplay(false);
 		}
 	},
@@ -144,12 +162,16 @@ var app = {
 	generateVolumeChoice: function() {
 		app.list.innerHTML = "";
 		for (var i = 0; i <= db.volumes.length; i++) {
-			app.addChoiceBtn( (btn) => {
-				btn.innerText = (i == db.volumes.length)? "Create Volume": db.volumes[i].name;
-				btn.onclick = app.volumeBtnOnClick;
-				btn.href = `#${i}`;
-				btn.dataset.volumeIndex = i;
-			} );
+			if (db.volumes[i] && db.volumes[i].id == "deleted") {
+				// deleted
+			} else {
+				app.addChoiceBtn( (btn) => {
+					btn.innerText = (i == db.volumes.length)? "Create Volume": db.volumes[i].name;
+					btn.onclick = app.volumeBtnOnClick;
+					btn.href = `#${i}`;
+					btn.dataset.volumeIndex = i;
+				} );
+			}
 		}
 	},
 	generateChapterChoice: function( parentVolumeBtn ) {
@@ -162,19 +184,23 @@ var app = {
 		const volumeIndex = app.list.firstChild.dataset.volumeIndex;
 		const chapterList = db.volumes[ volumeIndex ].chapters;
 		for (var i = 0; i <= chapterList.length; i++) {
-			app.addChoiceBtn( (btn) => {
-				if (i == chapterList.length) {
-					btn.innerText = "Create Chapter"
-				} else {
-					btn.dataset.chapterIndex = i;
-					btn.innerText = chapterList[i].name;
-				}
-				btn.href = `#${i}`;
-				btn.onclick = app.chapterBtnOnClick;
-			} );
+			if (chapterList[i] && chapterList[i].id == "deleted") {
+				// deleted
+			} else {
+				app.addChoiceBtn( (btn) => {
+					if (i == chapterList.length) {
+						btn.innerText = "Create Chapter"
+					} else {
+						btn.dataset.chapterIndex = i;
+						btn.innerText = chapterList[i].name;
+					}
+					btn.href = `#${i}`;
+					btn.onclick = app.chapterBtnOnClick;
+				} );
+			}
 		}
 		if ( parentVolumeBtn.innerText == "Create Chapter" || !document.querySelector("#list a.active")) {
-			document.querySelector(`#list a[href="#${chapterList.length - 1}"]`).classList.add("active");
+			app.list.childNodes[ app.list.childNodes.length -2 ].classList.add("active");
 		}
 	},
 	addChoiceBtn: function(callback) {
@@ -286,8 +312,109 @@ var app = {
 		document.execCommand("copy");
 	},
 
-	displayDatabaseDiff: function(){
-		// TBA
+	displayDatabaseDiff: function(){		// reset
+		app.databaseDiffContainer.innerHTML = "";
+		const changes = app.createDiffBetween2Objects( app.databaseBeforeEdit.volumes, db.volumes);
+		const   infos = document.createElement("div");
+		changes.id = "databaseDiff";
+		  infos.id = "showSelectedDiff";
+		changes.classList.add("col", "m6");
+		  infos.classList.add("col", "m6", "grey", "lighten-3");
+		app.databaseDiffContainer.append( changes, infos );
+
+		// stuff
+		const allVolumeElems = document.querySelectorAll("#databaseDiff>li > ul");
+		for (const volElem of allVolumeElems) {
+
+			const volumeTitle = document.createElement("b");
+			const volumeInfos = db.volumes[volElem.dataset.index];
+			volumeTitle.innerText = volumeInfos.id;
+			volElem.before(volumeTitle);
+
+			const allChapElems = volElem.querySelectorAll(`[data-index="chapters"] ul`);
+			if (allChapElems) {
+				for (chapElem of allChapElems) {
+					const chapTitle = document.createElement("b");
+					chapTitle.innerText = volumeInfos.chapters[ chapElem.dataset.index ].name;
+					chapElem.before(chapTitle);
+				}
+			}
+		}
+	},
+	showLongChange: function(newValue, oldValue) {
+		const target = document.getElementById("showSelectedDiff");
+		target.innerHTML = "";
+		if (oldValue) {
+			target.innerHTML = `
+				<h3>Original Value</h3>
+				<em class="red-text">${oldValue.replace(/\n/g, "<br>")}</em>
+			`;
+		}
+		target.innerHTML += `
+			<h3>New Value</h3>
+			<em class="green-text">${(newValue) ? newValue.replace(/\n/g, "<br>") : "[deleted]"}</em>
+		`;
+	},
+	createDiffBetween2Objects: function(old, now) {
+		const retval = document.createElement("ul");
+		retval.classList.add("browser-default");
+		// TODO: Support delete type
+
+		for (const i in now) {
+			const li = document.createElement("li");
+			if (old[i]) {
+				li.className = "orange-text";
+				if (typeof(old[i]) == "object") {
+					if (now[i].id == "deleted") {
+						li.className = "red-text";
+						li.append(`${now[i].name} (deleted)`);
+					} else {
+						const eval = app.createDiffBetween2Objects(old[i], now[i]);
+						if (eval.childNodes.length > 0){
+							eval.dataset.index = i;
+							li.append (eval);
+						}
+					}
+				} else if (old[i] != now[i]) {
+					li.innerText = i;
+					if (now[i].length + old[i].length > 50) {
+						li.innerHTML += " <i class='material-icons'>info</i>";
+						li.addEventListener("mouseover", function(){
+							exchangeActiveClass("#databaseDiff ", li);
+							app.showLongChange(now[i], old[i]);
+						});
+					} else {
+						li.innerHTML += ` :
+							<span class="red-text">  ${old[i]}</span> ->
+							<span class="green-text">${now[i]}</span>`;
+					}
+				}
+			} else if (now[i]) { // Old[i] empty and now[i] not empty -> value created
+				li.classList.add("green-text");
+				if (typeof(now[i]) == "object") {
+					const eval = app.createDiffBetween2Objects({}, now[i]);
+					if (eval.childNodes.length > 0){
+						eval.dataset.index = i;
+						li.append (eval);
+					}
+				} else {
+					li.innerText = i;
+					if (now[i].length > 50) {
+						li.innerHTML += " <i class='material-icons'>info</i>";
+						li.addEventListener("mouseover", function(){
+							exchangeActiveClass("#databaseDiff ", li);
+							app.showLongChange(now[i]);
+						});
+					} else {
+						li.innerText += ` : ${now[i]}`;
+					}
+				}
+			}
+			if (li.childNodes.length > 0) {
+				retval.append(li);
+			}
+		}
+		return retval;
 	}
 }
 document.addEventListener('DOMContentLoaded', function() {

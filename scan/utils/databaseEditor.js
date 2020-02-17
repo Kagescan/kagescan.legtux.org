@@ -368,7 +368,6 @@ var app = {
 	createDiffBetween2Objects: function(old, now) {
 		const retval = document.createElement("ul");
 		retval.classList.add("browser-default");
-		// TODO: Support delete type
 
 		for (const i in now) {
 			const li = document.createElement("li");
@@ -427,6 +426,3 @@ var app = {
 		return retval;
 	}
 }
-document.addEventListener('DOMContentLoaded', function() {
-	app.start();
-});

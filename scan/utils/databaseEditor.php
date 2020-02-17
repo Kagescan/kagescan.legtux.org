@@ -1,31 +1,62 @@
 <?php
+function checkJson( $jsonStr, $additionalError="" ) {
+	json_decode( $jsonStr );
+	$errorCode = json_last_error();
+	if ($errorCode == JSON_ERROR_NONE) {
+		return true;
+	} else {
+		throw new Exception("ERROR: The database is not valid (error code : $errorCode)\n$additionalError\nJSON STRING : $jsonStr");
+		return false;
+	}
+}
+function getManga() {
+	if (!empty($_GET["manga"])) {
+		return $_GET["manga"];
+	} else if (!empty($_POST["manga"])) {
+		return $_POST["manga"];
+	} else {
+		throw new Exception("Error : Please send a manga to the request (GET, POST) before !");
+	}
+}
+function main( $manga ) {
+	$masterPassword = "password"; // or you can set the value $passBdd if you include the db file
+	$injectJS = "";
+	$db_path = "../$manga/manga.json";
+	if ( count( glob($db_path, GLOB_BRACE) ) <= 0 ){
+		throw new Exception("FILE ERROR : The manga is not valid, or don't have a database");
+	}
 
-$manga = "kagerou-days"; //TODO : add security
-$masterPassword = "goshujin ! password's"; // or you can set the value $passBdd if you include the db file
-$db_path = "../$manga/manga.json";
-
-$obtainedPassword = !empty($_POST["password"]) ? $_POST["password"] : false;
-$obtainedDb = !empty($_POST["database"]) ? $_POST["database"] : false;
-$injectJS = "";
-
-if ($obtainedDb) {
-	$db = $obtainedDb;
-	if ($obtainedPassword == $masterPassword) {
-		if (file_put_contents($db_path, $db)) {
-			$injectJS = "alert('Saved !');";
+	if (! empty( $_POST["database"] )) {
+		$db = $_POST["database"];
+		if ($_POST["password"] == $masterPassword) {
+			checkJson( $db, "You were trying to save a database, but the process has been aborted due to being not valid. Please make a copy and edit it by yourself, without the database editor !! \n\n\n\n");
+			file_put_contents($db_path, $db);
 		} else {
-			$injectJS = "alert('Couldn\'t save your changes to the real file !!\nCopy the raw database and change the real file by yourself.');";
+			$injectJS = "alert('Error : Password is not valid !');";
 		}
 	} else {
-		$injectJS = "alert('incorrect password !!');";
+		$db = file_get_contents($db_path);
+		checkJson( $db, "The server's file is not valid. Please fix this directly, without the database editor." );
 	}
-} else {
-	// WARNING + TODO: Not secure against XSS.
-	$db = file_get_contents($db_path);
+
+	return "
+		document.addEventListener('DOMContentLoaded', function() {
+			$injectJS
+			app.start();
+		});
+		var db = $db;
+	";
 }
 
-if (empty($db)) {
-	$db = "{mangaName:'Err : database is not valid or empty', volumes: []}";
+
+$output = "";
+try {
+	$manga = getManga();
+	$output = main($manga);
+} catch (Exception $e) {
+	// prevents XSS
+	header('Content-Type: text/plain');
+	die ("An error occured !! \n$e");
 }
  ?>
 <!DOCTYPE html>
@@ -38,8 +69,7 @@ if (empty($db)) {
 		<link rel="stylesheet" href="../../res/materialize.min.css">
 
 		<script>
-			<?php echo $injectJS; ?>
-			var db = <?php echo $db; ?>
+			<?php echo $output;?>
 		</script>
 		<script src="databaseEditor.js" charset="utf-8"></script>
 	</head>
@@ -49,7 +79,7 @@ if (empty($db)) {
 			<h1>Kagescan Database Editor</h1>
 			<button type="button" class="btn right" id="saveBtn" onclick="app.showPopupThatSendLocalValuesToServer()">Save local changes to the real database</button>
 		</header>
-		<form class="hide container" id="sendToServerPopup" action="?" method="POST" >
+		<form class="hide container" id="sendToServerPopup" action="?manga=<?php echo $manga ?>" method="POST" >
 			<h3>Send local changes to the server</h3>
 			<p>Please check your edits before sending : </p>
 			<div class="row" id="databaseDiffContainer">

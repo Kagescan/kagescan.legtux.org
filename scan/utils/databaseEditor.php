@@ -1,7 +1,32 @@
 <?php
 
 $manga = "kagerou-days"; //TODO : add security
+$masterPassword = "goshujin ! password's"; // or you can set the value $passBdd if you include the db file
+$db_path = "../$manga/manga.json";
 
+$obtainedPassword = !empty($_POST["password"]) ? $_POST["password"] : false;
+$obtainedDb = !empty($_POST["database"]) ? $_POST["database"] : false;
+$injectJS = "";
+
+if ($obtainedDb) {
+	$db = $obtainedDb;
+	if ($obtainedPassword == $masterPassword) {
+		if (file_put_contents($db_path, $db)) {
+			$injectJS = "alert('Saved !');";
+		} else {
+			$injectJS = "alert('Couldn\'t save your changes to the real file !!\nCopy the raw database and change the real file by yourself.');";
+		}
+	} else {
+		$injectJS = "alert('incorrect password !!');";
+	}
+} else {
+	// WARNING + TODO: Not secure against XSS.
+	$db = file_get_contents($db_path);
+}
+
+if (empty($db)) {
+	$db = "{mangaName:'Err : database is not valid or empty', volumes: []}";
+}
  ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -12,7 +37,10 @@ $manga = "kagerou-days"; //TODO : add security
 		<link rel="stylesheet" href="databaseEditor.css">
 		<link rel="stylesheet" href="../../res/materialize.min.css">
 
-		<script src="databaseEditor_noServer.js" charset="utf-8"></script>
+		<script>
+			<?php echo $injectJS; ?>
+			var db = <?php echo $db; ?>
+		</script>
 		<script src="databaseEditor.js" charset="utf-8"></script>
 	</head>
 

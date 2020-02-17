@@ -3,54 +3,66 @@
 $manga = "kagerou-days"; //TODO : add security
 
  ?>
-
- <!DOCTYPE html>
- <html lang="en" dir="ltr">
- 	<head>
- 		<meta charset="utf-8">
- 		<title>Kagescan Database Editor</title>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title>Kagescan Database Editor</title>
 
 		<link rel="stylesheet" href="databaseEditor.css">
-		<link rel="stylesheet" href="/res/materialize.min.css">
+		<link rel="stylesheet" href="../../res/materialize.min.css">
 
-		<script>
-			var db = <?php include("../$manga/manga.json") ?>;
-		</script>
+		<script src="databaseEditor_noServer.js" charset="utf-8"></script>
 		<script src="databaseEditor.js" charset="utf-8"></script>
- 	</head>
+	</head>
 
- 	<body class="">
+	<body class="">
 		<header class="container">
 			<h1>Kagescan Database Editor</h1>
-			<p>Local changes autosave status: <span id="autoSaveStatus">Not modified</span></p>
-			<button type="button" class="btn right" name="save" disabled>Save local changes to the real database</button>
+			<button type="button" class="btn right" id="saveBtn" onclick="app.showPopupThatSendLocalValuesToServer()">Save local changes to the real database</button>
 		</header>
-		<form class="hide" id="sendToServerPopup">
+		<form class="hide container" id="sendToServerPopup" action="?" method="POST" >
 			<h3>Send local changes to the server</h3>
 			<p>Please check your edits before sending : </p>
-			<ul id="databaseDiff">
+			<div class="row" id="databaseDiffContainer">
+				<ul class="col m6" id="databaseDiff">
+					<li>... ?</li>
+				</ul>
+				<div class="col m6" id="showSelectedDiff">
 
-			</ul>
-			<input type="submit" name="submit" class="btn red" value="Send the local database to the server">
-			Raw database :
-			<textarea id="databaseRaw">
+				</div>
+			</div>
+			<p>Warning : You can't revert the sending operation. Make saves !</p>
+			<div class="row valign-wrapper">
+				<div class="col m3"><button class="btn" onclick="app.applyDefaultDisplay();">Go back</button></div>
+				<div class="col m5">
+					<label for="pass">Server password:</label>
+					<input type="password" id="pass" name="password" required>
+				</div>
+				<div class="col m4 right-align"><input type="submit" name="saveDatabase" class="btn red" value="Send the local database to the server"></div>
+			</div>
+
+			<p>Or you can copy/paste your changes to the real file : (<a href="#!" onclick="app.copyDatabaseRawTexatera()">Click here to copy</a>)</p>
+			<textarea id="databaseRaw" name="database">
 			</textarea>
 		</form>
 		<main id="app" style="margin: 20px;" class="row hide-on-small-only valign-wrapper">
 			<div class="col m4">
-				<button type="button" name="goToMenu" onclick="app.applyDefaultDisplay()" class="btn right">Go back (Volume Selection)</button>
+				<div class="row" id="listControlBtns">
+					<button class="col s12 btn" name="removeActive" onclick="app.removeActive()" >Delete the selected entry</button>
+					<button class="col s12 btn" name="goToMenu" onclick="app.applyDefaultDisplay()">Go back (Volume Selection)</button>
+				</div>
 				<div class="row" id="list">
 				</div>
 			</div>
 			<div class="col m8" id="editContainer">
 				<div id="defaultEditorMsg" class="active">
-					<button type="button" name="addVolume" class="btn right" disabled>Add a volume (tba)</button>
 					<p>Click on the volume to select it and edit his informations.<br>
 					Click again to show and edit the chapters</p>
 				</div>
 				<div id="chapterEdit">
 					<h3>Edit Chapter</h3>
-					<p> Chapter Name : <input type="text" name="name">
+					<p> Chapter Name : <input type="text" name="name" oninput="document.querySelector('#list a.active').innerText = this.value;">
 					</p>
 					<p> Chapter ID : <input type="text" name="id">
 					</p>
@@ -62,9 +74,8 @@ $manga = "kagerou-days"; //TODO : add security
 				</div>
 				<div id="volumeEdit">
 					<h3>Edit Volume</h3>
-					<button type="button" name="addChapter" class="btn" disabled>Add a chapter (tba)</button>
 
-					<p> Volume Name : <input type="text" name="name">
+					<p> Volume Name : <input type="text" name="name" oninput="document.querySelector('#list a.active').innerText = this.value;">
 					</p>
 					<p> Volume ID : <input type="text" name="id">
 					</p>
@@ -78,5 +89,5 @@ $manga = "kagerou-days"; //TODO : add security
 		</main>
 
 		<p class="hide-on-med-and-up">Your screen is too small !! Rotate your phone, enable desktop mode or use a computer/larger screen to use the database editor.</p>
- 	</body>
- </html>
+	</body>
+</html>

@@ -24,19 +24,28 @@ function getActivePositionFromHisParent(parent) {
 	}
 }
 
-function removeEntriesThatContainsDefinedId( obj ){
-	// Don't work well at the moment
-	const deleteSelector = "deleted";
+function removeEditorOwnEntriesFromObject( obj ) {
+	const isArray = Array.isArray(obj);
+	const retval = (isArray) ? [] : {} ;
 	for (const i in obj) {
+		const toAdd = obj[i];
 		if (typeof(obj[i]) == "object") {
-			if (obj[i].id == deleteSelector) {
-				obj.splice(i, 1);
+			if (obj[i].id !== "deleted") {
+				if (isArray) {
+					retval.push(removeEditorOwnEntriesFromObject( toAdd ));
+				} else {
+					retval[i] = removeEditorOwnEntriesFromObject( toAdd );
+				}
+			}
+		} else {
+			if (isArray) {
+				retval.push(toAdd);
 			} else {
-				obj[i] = removeEntriesThatContainsDefinedId( obj[i] );
+				retval[i] = toAdd;
 			}
 		}
 	}
-	return obj;
+	return retval;
 }
 
 // main
@@ -147,13 +156,13 @@ var app = {
 		}
 		if (isVolume) {
 			const volumeIndex = targetElem.dataset.volumeIndex;
-			
+
 			if ( app.databaseBeforeEdit.volumes[volumeIndex] ) {
 				db.volumes[volumeIndex] = { id: "deleted", name: db.volumes[volumeIndex].name };
 			} else {
 				db.volumes.splice(volumeIndex, 1);
 			}
-			
+
 			app.applyDefaultDisplay(false);
 		}
 	},
@@ -298,7 +307,8 @@ var app = {
 	},
 	showPopupThatSendLocalValuesToServer : function() {
 		app.saveLocalValuesFromEditor();
-		app.databaseRaw.value = JSON.stringify(db);
+		const toSend = removeEditorOwnEntriesFromObject(db);
+		app.databaseRaw.value = JSON.stringify(toSend);
 		app.displayDatabaseDiff();
 
 		if (app.sendToServerPopup.classList.contains("hide")) {
@@ -366,7 +376,7 @@ var app = {
 				li.className = "orange-text";
 				if (typeof(old[i]) == "object") {
 					if (now[i].id == "deleted") {
-						li.className = "red-text";
+						li.className = "deleted";
 						li.append(`${now[i].name} (deleted)`);
 					} else {
 						const eval = app.createDiffBetween2Objects(old[i], now[i]);

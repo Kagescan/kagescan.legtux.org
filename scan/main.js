@@ -1,5 +1,5 @@
 /*! Kagescan Manga Engine 2.0.0
- * @license MIT Copyright (C) 2017-2019 ShinProg / Kagescan */
+ * @license MIT Copyright (C) 2017-2020 ShinProg / Kagescan */
 
 // HELPERS //
 	const isVerticalMode = () => document.getElementById('tagMain').classList.contains("vertical");

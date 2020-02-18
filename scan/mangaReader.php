@@ -1,6 +1,4 @@
 <?php
-/*$manga = $_GET["manga"];*/
-// ce fichier a été supprimé le 23 11 2019 à 19:56. RIP MA VIE
 
 $root = "/scan/";
 $manga = $_GET["manga"];

@@ -92,28 +92,30 @@ if ($dbFile){
 	<main id="tagMain"  class="<?php echo $mainTagClass; ?>">
 		<div id="mangaSticky" class="grey darken-4">
 			<div id="mangaNav" class="row container blue-grey darken-4">
-				<div class="col s3 m1"><a id="linkPrev" href="<?php echo $globals_linkPrev?>">
+				<div class="col hide-on-small-only m1"><a id="linkPrev" href="<?php echo $globals_linkPrev?>">
 					<i class='material-icons'>arrow_back</i>
 				</a></div>
 				<div class="col s6 m3">
 					<select class="browser-default" id="chapterSelect" autocomplete="off"><?php echo $selectChapterElemContent; ?></select>
 				</div>
-				<div class="col s3 m1"><a id="linkNext" href="<?php echo $globals_linkNext?>">
+				<div class="col hide-on-small-only m1"><a id="linkNext" href="<?php echo $globals_linkNext?>">
 					<i class='material-icons'>arrow_forward</i>
 				</a></div>
-				<div class="col s6 m1">
+
+				<div class="col s1 m1">
 					<i onclick="toggle('mangaThumb', this)" class='material-icons'>view_carousel</i>
 				</div>
-				<div class="col s6 m1">
+				<div class="col s1 m1">
 					<i onclick="toggle('mangaSettings', this)" class='material-icons' id="settingsButton">settings</i>
 				</div>
-				<div class="col s3 m1">
+
+				<div class="col hide-on-small-only m1">
 					<i onclick="move(false);" class='material-icons'>navigate_before</i>
 				</div>
-				<div class="col s6 m3">
+				<div class="col s4 m3">
 					<select class="browser-default" id="pageSelect"></select>
 				</div>
-				<div class="col s3 m1">
+				<div class="col hide-on-small-only m1">
 					<i onclick="move();" class='material-icons'>navigate_next</i>
 				</div>
 			</div>
@@ -132,7 +134,7 @@ if ($dbFile){
 				}
 				?>
 
-				<p><a href="/discord/tchat.php" style="padding: 10px; border: 2px solid #888; border-radius: 3px; color: #888;">Merci de signaler tout problème (technique, ordre des pages, fautes d'orthographe) à notre équipe en cliquant ici!</a></p>
+				<p><a href="/discord/tchat.php" class="greyBtn">Merci de signaler tout problème (technique, ordre des pages, fautes d'orthographe) à notre équipe en cliquant ici!</a></p>
 				<br>
 				<hr>
 				<br>

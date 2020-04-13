@@ -4,13 +4,23 @@ $root = "/scan/";
 $manga = $_GET["manga"];
 $chapterId = $_GET["chapter"];
 
-
+$cookieParams = array(
+	"verticalMode" => 0,
+	"noAnimations" => 0,
+	"previousSize" => 50,
+	"margin70" => 1
+);
 if (!empty($_POST["changeValue"])){
-	$params = array("verticalMode", "noAnimations", "previousSize", "margin70");
-	foreach ($params as $i => $param) {
+	foreach ($cookieParams as $param => $defaultValue) {
 		$_COOKIE[$param] = empty($_POST[$param]) ? 0:$_POST[$param];
 		setCookie($param, $_COOKIE[$param], time()+3600*24*30, $root);
 	}
+} elseif (empty($_COOKIE["cookiesInitialized"])) {
+	foreach ($cookieParams as $param => $defaultValue) {
+		$_COOKIE[$param] = $defaultValue;
+		setCookie($param, $_COOKIE[$param], time()+3600*24*30, $root);
+	}
+	$_COOKIE["cookiesInitialized"] = true;
 }
 
 $mainTagClass = "";
@@ -59,7 +69,7 @@ if ($dbFile){
 		}
 	}
 } else {
-	die("??? : the manga you are looking for seems to exist, but the manga engine couldn't read the datapable !");
+	die("??? : the manga you are looking for seems to exist, but the manga engine couldn't read the database !");
 }
 
 ?>
@@ -156,7 +166,7 @@ if ($dbFile){
 			<div class="row">
 				<h2 class="center">Paramètres</h2>
 				<p><b>La modification des paramètres entrainera un rechargement de la page !</b><br>
-				Les paramètres sont sauvegardés sur votre ordinateur durant un mois, par le biais de cookies dont seul Kagescan et vous en détient l'accès.</p>
+				Les paramètres sont sauvegardés sur votre appareil durant un mois, par le biais de cookies dont seul Kagescan et vous en détient l'accès.</p>
 
 				<em>- Pour avoir plus de contrôle dans votre navigation -</em>
 				<div class="switch">Mode Vertical : <label><input type="checkbox" name="verticalMode" value="1" <?php if ($_COOKIE["verticalMode"] != 0) echo "checked"; ?> > <span class="lever"></span></label></div><br>

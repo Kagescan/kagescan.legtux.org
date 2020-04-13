@@ -7,14 +7,22 @@
 Under the MIT license, please read the file COPYING for more informations.
 
 This repository contains the public source code of kagescan website.  
-It will be updated each times a major improvement is made.
-When a page gets a major improvement, his source-code will be published in this repository
 
-At the moment, thoses parts are published : 
+**This is the development repository !! This contains experimental/unstested/unfinished features.**
+
+Last stable (published) commit :
 * Music
 
+Finished but not published :
+* The manga reader
+
+Programming :
+* The chapter/volume select page
+
 ## Requirements
-At the moment, Kagescan runs using PHP version 7, and one database called "kagescan".
+~~At the moment, Kagescan runs using PHP version 7, and one database called "kagescan".~~
+
+The current code don't use any databases
 
 ## Configuration
 Configure `/res/private/db.php`, that contains the master password of kagescan's database.

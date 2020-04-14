@@ -89,18 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		// go to the default page
 		window.onpopstate();
 	} else if (globals.pageType=="chapterSelect") { // Select chapter part
-		M.Carousel.init( document.querySelectorAll('#scan_chapterSelect .carousel'), {
-			noWrap: true,
-			indicators: true,
-			shift: 20,
-			padding: 0,
-			dist: -50,
-			onCycleTo: function(e) {
-				const target = document.getElementById(e.href.split("#")[1]);
-				document.getElementById("chapterList_move").style.transform = `translateY(-${target.offsetTop}px)`;
-			}
-		});
-		document.getElementById("chapterList_move").style.transform = `translateY(0px)`; //default
+
 	}
 });
 

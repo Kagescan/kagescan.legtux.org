@@ -1,6 +1,7 @@
 <?php
 
-
+// Adapt the code with your website
+// NEVER publish that file if there are passwords !!
 $passBdd = "";
 
 try {

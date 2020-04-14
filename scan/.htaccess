@@ -1,0 +1,9 @@
+Options -Indexes
+RewriteEngine on
+
+# Manga only : matches [alnum + dash sign]; and 1 or 0 [slash] only
+RewriteRule ^([0-9A-Za-z-]+)([/]?)$   /scan/chapterSelect.php?manga=$1 [L]
+
+# + chapter : matches numbers, and force end slash for relative URLs
+RewriteRule ^([0-9A-Za-z-]+)/([0-9.-]+)/$   /scan/mangaReader.php?manga=$1&chapter=$2 [L]
+RewriteRule ^([0-9A-Za-z-]+)/([0-9.-]+)$   /scan/$1/$2/ [R=301,L]

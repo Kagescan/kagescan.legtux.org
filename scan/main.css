@@ -97,15 +97,6 @@ main.margin70 #mangaContainer {
 /*
 	MANGA SELECT
 */
-
-.volume h2 {
-	font-size: 1.5rem;
-	line-height: 110%;
-	margin: 1rem;
-}
-.volumeCover img {
-	max-height: 310px;
-}
 #mangaList section {
 	display:flex;
 	flex-wrap: wrap;
@@ -120,51 +111,32 @@ main.margin70 #mangaContainer {
 }
 
 /*
-	VOLUME SELECT
+	CHAPTER SELECT
 */
-.indicators {transform:translateY(10px);}
-.carousel-item img {transform: translateY(-80px);}
-#volumes {
+
+/*Volume infos*/
+#chapterSelect section{
+	background-color: #263238;
+	margin: 20px;
+	color: #e0e0e0;
+}
+#chapterSelect section>.volumeInfos {
 	display: flex;
-	flex-wrap:wrap;
-	margin: 0 20px;
+	justify-content: space-between;
+	align-items: stretch;
 }
-	#volumes>div>div.carousel{
-		height: 400px;
-	}
-#chapterList {
-	height: 400px;
-	overflow:hidden;
+#chapterSelect section>.volumeInfos>.lastCover {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	margin-right: 20px;
 }
-	#chapterList>div>div {
-		height: 395px;
-		margin: 5px;
-		display:flex;
-		flex-direction: column;
-		border-radius: 5px;
-		background-color: #37474f;
-	}
-	#chapterList .collection {
-		margin: 5px;
-	}
-		.collection>a b {
-			font-size: 1.2rem;
-			width: 30px;
-			display: inline-block;
-		}
-		.collection>a.collection-item:not(.active):hover {
-			background-color: #263238;
-			color: #fff;
-		}
-		.collection>.collection-item {
-			background-color: transparent;
-		}
-		.collection>a.collection-item {
-			color: #ddd;
-		}
-		.chapDescription img{
-			height: 250px;
-		}
+#chapterSelect section h3,#chapterSelect section h4 {
+	color: white;
+	background-color: #3e2723;
+	font-size: 2rem;
+	text-align: center;
+}
 /*
 	MANGA READER
 */

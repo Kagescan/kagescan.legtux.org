@@ -21,30 +21,28 @@ function generateVolumeList($db) {
 		if ($volume["name"] && $volume["chapters"]){
 			$dataSummary = ($volume["summary"]) ? str_replace("\n", "<br>", $volume["summary"]) :"Pas de résumé...";
 			$coverImg = "- Sans couverture -";
+			$volumeName = htmlentities($volume["name"], ENT_QUOTES);
 			if ($volume["coverArt"]) {
 				$src = htmlentities($volume["coverArt"], ENT_QUOTES);
 				$alt = $db["mangaName"]." ".$volume["name"];
-				$coverImg = "<img src='$src' alt='$alt cover' />";
+				$coverImg = "<img src='$src' alt='$alt cover' class='volumeCoverImg' />";
 			}
 			?>
 			<section>
-				<div class="volumeInfos container">
-					<div class='lastCover'>
-						<div class="title">
-							<h3><?php echo htmlentities($volume["name"], ENT_QUOTES); ?></h3>
-						</div>
-						<div class="summary">
-							<?php echo $dataSummary; ?>
-						</div>
-						<div><!-- empty div for centering--></div>
-					</div>
-					<div class='firstCover'>
-						<?php echo $coverImg; ?>
-					</div>
+				<div class="tabList">
+					<ul>
+						<li></li>
+						<?php generateChapterList($volume["chapters"]) ?>
+					</ul>
 				</div>
-				<div class="container">
-					<h4>Liste des volumes</h4>
-					<?php generateChapterList($volume["chapters"]) ?>
+				<div class="tabContent" data-coverImg="">
+					<?php
+					echo $coverImg;
+					echo "<span class='content'>";
+					echo "<h3>", $volumeName, "</h3>\n";
+					echo $dataSummary;
+					echo "</span>";
+					?>
 				</div>
 			</section>
 			<?php
@@ -52,13 +50,11 @@ function generateVolumeList($db) {
 	}
 }
 function generateChapterList($allChapters) {
-	echo "<ul>";
 	foreach ($allChapters as $i => $chapter) {
 		if ($chapter["id"] && $chapter["name"]){
 			echo "<li>".$chapter["id"].". ".$chapter["name"]."</li>";
 		}
 	}
-	echo "</ul>";
 }
 ?>
 <!DOCTYPE html>
@@ -88,8 +84,10 @@ function generateChapterList($allChapters) {
 		<ul id="volumeNavigation">
 		</ul>
 	</main>
-	<?php
+	<div id="volumeList" class="container">
+		<?php
 		generateVolumeList($db);
-	?>
+		?>
+	</div>
 </body>
 </html>

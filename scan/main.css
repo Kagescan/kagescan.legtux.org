@@ -115,15 +115,47 @@ main.margin70 #mangaContainer {
 */
 
 /*Volume infos*/
-#chapterSelect section{
+#volumeList section{
+	width: 100%;
 	background-color: #263238;
 	margin: 20px;
 	color: #e0e0e0;
+	display: inline-grid;
+	grid-template-columns: auto 20rem;
 }
-#chapterSelect section>.volumeInfos {
+#volumeList section .tabContent{
 	display: flex;
-	justify-content: space-between;
-	align-items: stretch;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+#volumeList section .tabContent>span{
+	position:absolute;
+	background: rgba(0,0,0,0.7);
+	top:0;
+	left:0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	overflow-y: auto;
+	padding: 3px;
+	text-align: justify;
+	transition: opacity 0.5s;
+	opacity: 1;
+}
+#volumeList section .tabContent>img {
+	filter: blur(2px);
+    min-width: 100%;
+	transition: filter 0.5s;
+}
+#volumeList section .tabContent:hover>span{
+	opacity: 0;
+}
+#volumeList section .tabContent:hover>img {
+	filter: none;
+}
+
+/*#chapterSelect section>.volumeInfos {
 }
 #chapterSelect section>.volumeInfos>.lastCover {
 	display: flex;
@@ -136,7 +168,7 @@ main.margin70 #mangaContainer {
 	background-color: #3e2723;
 	font-size: 2rem;
 	text-align: center;
-}
+}*/
 /*
 	MANGA READER
 */

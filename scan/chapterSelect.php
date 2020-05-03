@@ -31,15 +31,16 @@ function generateVolumeList($db) {
 			<section>
 				<div class="tabList">
 					<ul>
-						<li></li>
-						<?php generateChapterList($volume["chapters"]) ?>
+						<?php
+						echo "<li class='selected'>", $volumeName, "</li>";
+						generateChapterList($volume["chapters"])
+						?>
 					</ul>
 				</div>
 				<div class="tabContent" data-coverImg="">
 					<?php
 					echo $coverImg;
 					echo "<span class='content'>";
-					echo "<h3>", $volumeName, "</h3>\n";
 					echo $dataSummary;
 					echo "</span>";
 					?>

@@ -123,8 +123,33 @@ main.margin70 #mangaContainer {
 	display: inline-grid;
 	grid-template-columns: auto 20rem;
 }
-#volumeList section .tabContent{
+#volumeList section>div {
 	display: flex;
+}
+#volumeList section .tabList {
+	align-items: center;
+	background: #313641;
+}
+#volumeList section .tabList>ul {
+	width: 100%;
+	font-size: 1.5rem;
+}
+#volumeList section .tabList>ul>li {
+	padding: 0.5rem;
+	transition: background 0.5s;
+}
+#volumeList section .tabList>ul>li:hover {
+	background-color: #fd554a;
+}
+#volumeList section .tabList>ul>li:first-child {
+	background-color: #fd554a;
+	font-size: 2rem;
+	text-align: center;
+}
+#volumeList section .tabList>ul:hover>li:first-child {
+	background-color: rgba(253, 85, 74, 0.5);
+}
+#volumeList section .tabContent{
     overflow: hidden;
     position: relative;
     width: 100%;

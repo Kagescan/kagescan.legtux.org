@@ -2,7 +2,7 @@
 
 ## Deprecation Notice
 
-This repository contains some code of the original Kagescan's website (kagescan.legtux.org), written using PHP.  
+This repository contains some code of the original Kagescan's website (kagescan.legtux.org) with a bunch of unreleased new features (such as the new `scan/` engine), written using PHP.  
 **It has been deprecated in favor of the (planned) new Kagescan's website
 See more at the [Kagescan/code.kagescan.fr](https://github.com/Kagescan/code.kagescan.fr) repository**
 
@@ -19,13 +19,13 @@ This repository contains the public source code of kagescan website.
 
 **This is the development repository !! This contains experimental/unstested/unfinished features.**
 
-Last stable (published) commit :
+Stable and published in kagescan.legtux.org :
 * Music
 
 Finished but not published :
 * The manga reader
 
-Programming :
+Not finished :
 * The chapter/volume select page
 
 ## Requirements

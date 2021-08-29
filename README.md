@@ -3,7 +3,7 @@
 ## Deprecation Notice
 
 This repository contains some code of the original Kagescan's website (kagescan.legtux.org), written using PHP.  
-**It has been deprecated in favor of the (planned) new Kagescan's website, that runs under Node.JS  
+**It has been deprecated in favor of the (planned) new Kagescan's website
 See more at the [Kagescan/code.kagescan.fr](https://github.com/Kagescan/code.kagescan.fr) repository**
 
 ----------------------------

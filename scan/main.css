@@ -97,15 +97,6 @@ main.margin70 #mangaContainer {
 /*
 	MANGA SELECT
 */
-
-.volume h2 {
-	font-size: 1.5rem;
-	line-height: 110%;
-	margin: 1rem;
-}
-.volumeCover img {
-	max-height: 310px;
-}
 #mangaList section {
 	display:flex;
 	flex-wrap: wrap;
@@ -120,51 +111,89 @@ main.margin70 #mangaContainer {
 }
 
 /*
-	VOLUME SELECT
+	CHAPTER SELECT
 */
-.indicators {transform:translateY(10px);}
-.carousel-item img {transform: translateY(-80px);}
-#volumes {
+
+/*Volume infos*/
+#volumeList section{
+	width: 100%;
+	background-color: #263238;
+	margin: 20px;
+	color: #e0e0e0;
+	display: inline-grid;
+	grid-template-columns: auto 20rem;
+}
+#volumeList section>div {
 	display: flex;
-	flex-wrap:wrap;
-	margin: 0 20px;
 }
-	#volumes>div>div.carousel{
-		height: 400px;
-	}
-#chapterList {
-	height: 400px;
-	overflow:hidden;
+#volumeList section .tabList {
+	align-items: center;
+	background: #313641;
 }
-	#chapterList>div>div {
-		height: 395px;
-		margin: 5px;
-		display:flex;
-		flex-direction: column;
-		border-radius: 5px;
-		background-color: #37474f;
-	}
-	#chapterList .collection {
-		margin: 5px;
-	}
-		.collection>a b {
-			font-size: 1.2rem;
-			width: 30px;
-			display: inline-block;
-		}
-		.collection>a.collection-item:not(.active):hover {
-			background-color: #263238;
-			color: #fff;
-		}
-		.collection>.collection-item {
-			background-color: transparent;
-		}
-		.collection>a.collection-item {
-			color: #ddd;
-		}
-		.chapDescription img{
-			height: 250px;
-		}
+#volumeList section .tabList>ul {
+	width: 100%;
+	font-size: 1.5rem;
+}
+#volumeList section .tabList>ul>li {
+	padding: 0.5rem;
+	transition: background 0.5s;
+}
+#volumeList section .tabList>ul>li:hover {
+	background-color: #fd554a;
+}
+#volumeList section .tabList>ul>li:first-child {
+	background-color: #fd554a;
+	font-size: 2rem;
+	text-align: center;
+}
+#volumeList section .tabList>ul:hover>li:first-child {
+	background-color: rgba(253, 85, 74, 0.5);
+}
+#volumeList section .tabContent{
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+#volumeList section .tabContent>span{
+	position:absolute;
+	background: rgba(0,0,0,0.7);
+	top:0;
+	left:0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	overflow-y: auto;
+	padding: 3px;
+	text-align: justify;
+	transition: opacity 0.5s;
+	opacity: 1;
+}
+#volumeList section .tabContent>img {
+	filter: blur(2px);
+    min-width: 100%;
+	transition: filter 0.5s;
+}
+#volumeList section .tabContent:hover>span{
+	opacity: 0;
+}
+#volumeList section .tabContent:hover>img {
+	filter: none;
+}
+
+/*#chapterSelect section>.volumeInfos {
+}
+#chapterSelect section>.volumeInfos>.lastCover {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	margin-right: 20px;
+}
+#chapterSelect section h3,#chapterSelect section h4 {
+	color: white;
+	background-color: #3e2723;
+	font-size: 2rem;
+	text-align: center;
+}*/
 /*
 	MANGA READER
 */

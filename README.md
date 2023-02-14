@@ -2,9 +2,9 @@
 
 ## Deprecation Notice
 
-This repository contains some code of the original Kagescan's website (kagescan.legtux.org) with a bunch of unreleased new features (such as the new `scan/` engine), written using PHP.  
-**It has been deprecated in favor of the (planned) new Kagescan's website
-See more at the [Kagescan/code.kagescan.fr](https://github.com/Kagescan/code.kagescan.fr) repository**
+This repository contains some code of the original Kagescan's website (kagescan.legtux.org) with a bunch of unreleased new features (such as the new `scan/` engine), written using PHP between 2017 and 2020.  
+
+**This project is no longer maintained**
 
 ----------------------------
 
